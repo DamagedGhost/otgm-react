@@ -9,6 +9,8 @@ import DetallesProdPage from './pages/Productos/DetalleProdPage';
 import ContactoPage from './pages/Contacto/ContactoPage';
 import LoginPage from './pages/Registro/LoginPage';
 import RegistroPage from './pages/Registro/RegistroPage';
+import CarritoPage from './pages/Carrito/CarritoPage';
+import AdminHomePage from './pages/admin/AdminHomePage';
 import './App.css';
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
         <Route path="/blogs/blog1" element={<Blog1Page />} />
         <Route path="/blogs/blog2" element={<Blog2Page />} />
         <Route path="/contacto" element={<ContactoPage />} />
+        <Route path="/carrito" element={<CarritoPage />} />
+        <Route path="/AdminHomePage" element={<AdminHomePage />} />
       </Routes>
     </Router>
   );

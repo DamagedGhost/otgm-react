@@ -1,5 +1,5 @@
 import React from 'react';
-import MainTemplate from '../templates/MainTemplate';
+import MainTemplate from 'react';
 import ProductGrid from '../components/organisms/ProductGrid';
 import Button from '../components/atoms/Button';
 import useProductsViewModel from '../viewmodels/useProductsViewModel';
