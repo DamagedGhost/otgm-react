@@ -5,11 +5,11 @@ import React from 'react';
 
 const NavbarVerticalAdmin = () => {
     return (
+        <div>
+            <aside className="d-flex flex-column justify-content-between vh-100" id="sidebar">
                 <div>
-                <aside classname="d-flex flex-column justify-content-between" id="sidebar">
-                    <div>
-                    <div classname>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="{16}" height="{16}" fill="currentColor" classname="bi bi-vinyl-fill" viewBox="0 0 16 16">
+                    <div className="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} fill="currentColor" className="bi bi-vinyl-fill" viewBox="0 0 16 16">
                         <path d="M8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4m0 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0" />
                         </svg>

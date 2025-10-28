@@ -1,6 +1,5 @@
 import React from 'react';
 import AdminTemplate from '../../templates/AdminTemplate';
-import '../../Admin.css'
 
 const AdminHomePage = () => {
     return (

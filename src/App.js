@@ -11,6 +11,8 @@ import LoginPage from './pages/Registro/LoginPage';
 import RegistroPage from './pages/Registro/RegistroPage';
 import CarritoPage from './pages/Carrito/CarritoPage';
 import AdminHomePage from './pages/admin/AdminHomePage';
+import MainInventario from './pages/admin/Inventario/MainInventario';
+import NuevoProducto from './pages/admin/Inventario/NuevoProducto';
 import './App.css';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
         <Route path="/contacto" element={<ContactoPage />} />
         <Route path="/carrito" element={<CarritoPage />} />
         <Route path="/AdminHomePage" element={<AdminHomePage />} />
+        <Route path="/AdminInventario" element={<MainInventario />} />
+        <Route path="/AdminInventario/NuevoProducto" element={<NuevoProducto />} />
       </Routes>
     </Router>
   );
