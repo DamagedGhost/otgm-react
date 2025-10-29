@@ -13,6 +13,9 @@ import CarritoPage from './pages/Carrito/CarritoPage';
 import AdminHomePage from './pages/admin/AdminHomePage';
 import MainInventario from './pages/admin/Inventario/MainInventario';
 import NuevoProducto from './pages/admin/Inventario/NuevoProducto';
+import ListadoProductos from './pages/admin/Inventario/ListadoProductos';
+import EditarProducto from './pages/admin/Inventario/EditarProducto';
+import Usuario from './pages/admin/Usuarios/Usuario';
 import './App.css';
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
         <Route path="/AdminHomePage" element={<AdminHomePage />} />
         <Route path="/AdminInventario" element={<MainInventario />} />
         <Route path="/AdminInventario/NuevoProducto" element={<NuevoProducto />} />
+        <Route path="/AdminInventario/ListadoProductos" element={<ListadoProductos />} />
+        <Route path="/AdminInventario/EditarProducto" element={<EditarProducto />} />
+        <Route path="/Admin/Usuarios" element={<Usuario />} />
       </Routes>
     </Router>
   );
