@@ -14,8 +14,8 @@ const Carrito = () => {
                 <div className="col-md-8">
                 <div id="cart-items-list">
                 </div>
-                </div>
-                {/* Resumen */}
+                </div>  
+                {/* Resumen :V */}
                 <div className="col-md-4">
                 <div className="card p-3 shadow-sm">
                     <h5 className="mb-3">TOTAL:</h5>
