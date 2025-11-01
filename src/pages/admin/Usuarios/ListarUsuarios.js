@@ -3,7 +3,7 @@ import AdminTemplate from "../../../templates/AdminTemplate";
 const ListarUsuarios = () => {
     return (
         <AdminTemplate>
-            <div className="col-md-9 col-lg-10">
+            <div className="flex-grow-1 p-4 bg-light" id="main-content">
                 <div>
                     <h2 className="h5 mb-4">Menu Listado de Usuarios</h2>
                 </div>

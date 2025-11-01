@@ -4,7 +4,7 @@ import Button from '../../../components/atoms/Button';
 const AgregarUsuario = () => {
     return (
         <AdminTemplate>
-            <section id="nuevo-usuario" className="form-section container my-3">
+            <section id="main-content" className="flex-grow-1 p-4 bg-light">
             <h1>Nuevo Usuario</h1>
             <form id="registrationForm">
                 {/* RUT */}

@@ -38,18 +38,21 @@ function App() {
         <Route path="/blogs/blog2" element={<Blog2Page />} />
         <Route path="/contacto" element={<ContactoPage />} />
         <Route path="/carrito" element={<CarritoPage />} />
-        <Route path="/AdminHomePage" element={<AdminHomePage />} />
-        <Route path="/AdminInventario" element={<MainInventario />} />
-        <Route path="/AdminInventario/NuevoProducto" element={<NuevoProducto />} />
-        <Route path="/AdminInventario/ListadoProductos" element={<ListadoProductos />} />
-        <Route path="/AdminInventario/EditarProducto" element={<EditarProducto />} />
-        <Route path="/Admin/Usuarios" element={<Usuario />} />
-        <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
-        <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
         <Route path="/carrito" element={<CarritoPage />} />
         <Route path="/compra" element={<CompraPage />} />
         <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
         <Route path="/pago-error" element={<PagoErrorPage />} />
+        {/* ADMIN ROUTES */}
+        <Route path="/Admin" element={<AdminHomePage />} />
+        {/* ADMIN INVENTARIO ROUTES */}
+        <Route path="/Admin/Inventario" element={<MainInventario />} />
+        <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
+        <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
+        <Route path="/Admin/Inventario/EditarProducto" element={<EditarProducto />} />
+        {/* ADMIN USUARIOS ROUTES */}
+        <Route path="/Admin/Usuarios" element={<Usuario />} />
+        <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
+        <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
         </Routes>
     </Router>
   );

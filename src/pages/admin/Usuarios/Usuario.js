@@ -4,8 +4,8 @@ import Button from "../../../components/atoms/Button"
 const Usuario = () => {
     return (
         <AdminTemplate>
+            <div className="flex-grow-1 bg-light" id="main-content">
             <div>
-            <div className="container-fluid p-4">
                 <h2 className="h5 mb-4">Menu usuario</h2>
                 <p>Desde aquí puedes crear, mostrar y editar usuarios.</p>
                 {/* Contenido adicional del panel de administración */}

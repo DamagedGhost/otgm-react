@@ -5,7 +5,7 @@ const NuevoProducto = () => {
     return (
     <AdminTemplate>
         {/*TODO: Formulario de registro (extraido de otro archivo, tarea de formulario) */}
-        <section className="form-section container my-3 p-4 border rounded-3 bg-white">
+        <section className="flex-grow-1 p-4 bg-light" id="main-content">
         <h1>Nuevo Producto</h1>
         <form id="registrationForm" onsubmit="validarFormulario(event)">
             {/* Código Producto */}
