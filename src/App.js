@@ -18,6 +18,9 @@ import EditarProducto from './pages/admin/Inventario/EditarProducto';
 import Usuario from './pages/admin/Usuarios/Usuario';
 import AgregarUsuario from './pages/admin/Usuarios/AgregarUsuario';
 import ListarUsuarios from './pages/admin/Usuarios/ListarUsuarios';
+import CompraPage from './pages/Carrito/CompraPage';
+import PagoCorrectoPage from './pages/Carrito/PagoCorrectoPage';
+import PagoErrorPage from './pages/Carrito/PagoErrorPage';
 import './App.css';
 
 function App() {
@@ -43,7 +46,11 @@ function App() {
         <Route path="/Admin/Usuarios" element={<Usuario />} />
         <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
         <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
-      </Routes>
+        <Route path="/carrito" element={<CarritoPage />} />
+        <Route path="/compra" element={<CompraPage />} />
+        <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
+        <Route path="/pago-error" element={<PagoErrorPage />} />
+        </Routes>
     </Router>
   );
 }
