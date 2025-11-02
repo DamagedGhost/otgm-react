@@ -15,12 +15,15 @@ import MainInventario from './pages/admin/Inventario/MainInventario';
 import NuevoProducto from './pages/admin/Inventario/NuevoProducto';
 import ListadoProductos from './pages/admin/Inventario/ListadoProductos';
 import EditarProducto from './pages/admin/Inventario/EditarProducto';
-import Usuario from './pages/admin/Usuarios/Usuario';
+import Usuario from './pages/admin/Usuarios/MainUsuario';
 import AgregarUsuario from './pages/admin/Usuarios/AgregarUsuario';
 import ListarUsuarios from './pages/admin/Usuarios/ListarUsuarios';
 import CompraPage from './pages/Carrito/CompraPage';
 import PagoCorrectoPage from './pages/Carrito/PagoCorrectoPage';
 import PagoErrorPage from './pages/Carrito/PagoErrorPage';
+import EditarUsuario from './pages/admin/Usuarios/EditarUsuario';
+import MainBoleta from './pages/admin/Boleta/MainBoleta';
+import MostrarBoletas from './pages/admin/Boleta/MostrarBoletas';
 import './App.css';
 
 function App() {
@@ -53,7 +56,11 @@ function App() {
         <Route path="/Admin/Usuarios" element={<Usuario />} />
         <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
         <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
-        </Routes>
+        <Route path="/Admin/Usuarios/EditarUsuario" element={<EditarUsuario />} />
+        {/* ADMIN BOLETA ROUTES */}
+        <Route path="/Admin/Boleta" element={<MainBoleta />} />
+        <Route path="/Admin/Boleta/MostrarBoletas" element={<MostrarBoletas />} />
+      </Routes>
     </Router>
   );
 }
