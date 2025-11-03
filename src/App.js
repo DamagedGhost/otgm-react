@@ -24,6 +24,12 @@ import PagoErrorPage from './pages/Carrito/PagoErrorPage';
 import EditarUsuario from './pages/admin/Usuarios/EditarUsuario';
 import MainBoleta from './pages/admin/Boleta/MainBoleta';
 import MostrarBoletas from './pages/admin/Boleta/MostrarBoletas';
+import CategoriasPage from './pages/Categorias/CategoriasPage';
+import HistorialCompra from './pages/admin/Usuarios/HistorialCompra';
+import ProductoReporte from './pages/admin/Inventario/ProductoReporte';
+import ProductosCriticos from './pages/admin/Inventario/ProductosCriticos';
+import Reporte from './pages/admin/Reporte/Reporte';
+import Perfil from './pages/admin/Perfil/Perfil';
 import './App.css';
 
 function App() {
