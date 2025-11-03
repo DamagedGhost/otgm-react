@@ -24,11 +24,6 @@ import PagoErrorPage from './pages/Carrito/PagoErrorPage';
 import EditarUsuario from './pages/admin/Usuarios/EditarUsuario';
 import MainBoleta from './pages/admin/Boleta/MainBoleta';
 import MostrarBoletas from './pages/admin/Boleta/MostrarBoletas';
-import ProductosCriticos from './pages/admin/Inventario/ProductosCriticos';
-import ProductoReporte from './pages/admin/Inventario/ProductoReporte';
-import HistorialCompra from './pages/admin/Usuarios/HistorialCompra';
-import Reporte from './pages/admin/Reporte/Reporte';
-import Perfil from './pages/admin/Perfil/Perfil';
 import './App.css';
 
 function App() {
@@ -39,6 +34,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registro" element={<RegistroPage />} />
         <Route path="/productos" element={<ProductosPage />} />
+        <Route path="/categoria" element={<CategoriasPage />} />
         <Route path="/productos/:title" element={<DetallesProdPage />} />
         <Route path="/nosotros" element={<NostrosPage />} />
         <Route path="/blogs" element={<BlogsPage />} />

@@ -5,7 +5,8 @@ const useProductsViewModel = () => {
 
   useEffect(() => {
     // Podrías traerlos de una API en el futuro
-    setProducts([
+    const rawProducts = [ /* tus productos aquí */ 
+
       { title: 'Guitarra Rosewood', 
         price: 45000, 
         image: 'https://audiomusicacl.vtexassets.com/arquivos/ids/192797/1-guitarra-acustica-vizcaya-con-cuerdas-de-nylon-arcg39-rb-207758.jpg?v=638556328914200000',
@@ -63,9 +64,17 @@ const useProductsViewModel = () => {
         miniatura1: 'https://http2.mlstatic.com/D_NQ_NP_784632-MLA31592144602_072019-O.webp',
         miniatura2: 'https://http2.mlstatic.com/D_NQ_NP_758460-MLB77084437908_062024-O.webp',
         descripcion: 'La Batería DarkWood combina un diseño elegante con un sonido potente y versátil. Fabricada con maderas de alta calidad, ofrece una resonancia excepcional y durabilidad. Ideal para bateristas de todos los niveles, desde principiantes hasta profesionales, que buscan un instrumento confiable para ensayos y presentaciones en vivo.'},
-        
-      
-    ]);
+
+    ];
+    const productsWithCategory = rawProducts.map((p) => {
+    let categoria = "Otros";
+    if (p.title.toLowerCase().includes("guitarra")) categoria = "Guitarras";
+    else if (p.title.toLowerCase().includes("teclado")) categoria = "Teclados";
+    else if (p.title.toLowerCase().includes("bateria")) categoria = "Baterías";
+    return { ...p, categoria };
+  });
+
+  setProducts(productsWithCategory);
   }, []);
 
   return { products };
