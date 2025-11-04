@@ -29,7 +29,8 @@ const Navbar = () => {
         </button>
         <ul className="navbar-nav me-auto">
           <li><Link className="nav-link active" to="/">Inicio</Link></li>
-          <li><Link className="nav-link" to="/productos">Productos</Link></li>
+          <li><Link className="nav-link" to="/categoria">Categoria</Link></li>
+        <li><Link className="nav-link" to="/productos">Productos</Link></li>
           <li><Link className="nav-link" to="/nosotros">Nosotros</Link></li>
           <li><Link className="nav-link" to="/blogs">Blogs</Link></li>
           <li><Link className="nav-link" to="/contacto">Contacto</Link></li>

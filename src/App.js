@@ -24,6 +24,12 @@ import PagoErrorPage from './pages/Carrito/PagoErrorPage';
 import EditarUsuario from './pages/admin/Usuarios/EditarUsuario';
 import MainBoleta from './pages/admin/Boleta/MainBoleta';
 import MostrarBoletas from './pages/admin/Boleta/MostrarBoletas';
+import CategoriasPage from './pages/Categorias/CategoriasPage';
+import HistorialCompra from './pages/admin/Usuarios/HistorialCompra';
+import ProductoReporte from './pages/admin/Inventario/ProductoReporte';
+import ProductosCriticos from './pages/admin/Inventario/ProductosCriticos';
+import Reporte from './pages/admin/Reporte/Reporte';
+import Perfil from './pages/admin/Perfil/Perfil';
 import './App.css';
 
 function App() {
@@ -34,6 +40,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registro" element={<RegistroPage />} />
         <Route path="/productos" element={<ProductosPage />} />
+        <Route path="/categoria" element={<CategoriasPage />} />
         <Route path="/productos/:title" element={<DetallesProdPage />} />
         <Route path="/nosotros" element={<NostrosPage />} />
         <Route path="/blogs" element={<BlogsPage />} />
@@ -51,14 +58,21 @@ function App() {
         <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
         <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
         <Route path="/Admin/Inventario/EditarProducto" element={<EditarProducto />} />
+        <Route path="/Admin/Inventario/ProductoReporte" element={<ProductoReporte />} />
+        <Route path="/Admin/Inventario/ProductosCriticos" element={<ProductosCriticos />} />
         {/* ADMIN USUARIOS ROUTES */}
         <Route path="/Admin/Usuarios" element={<Usuario />} />
         <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
         <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
         <Route path="/Admin/Usuarios/EditarUsuario" element={<EditarUsuario />} />
+        <Route path="/Admin/Usuarios/HistorialCompra" element={<HistorialCompra />} />
         {/* ADMIN BOLETA ROUTES */}
         <Route path="/Admin/Boleta" element={<MainBoleta />} />
         <Route path="/Admin/Boleta/MostrarBoletas" element={<MostrarBoletas />} />
+        {/* ADMIN REPORTE ROUTE */}
+        <Route path="/Admin/Reporte" element={<Reporte />} />
+        {/* ADMIN PERFIL ROUTE */}
+        <Route path="/Admin/Perfil" element={<Perfil />} />
       </Routes>
     </Router>
   );
