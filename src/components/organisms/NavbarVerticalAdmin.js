@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 
-// TODO: Arregla los links weon flojo!
 
 const NavbarVerticalAdmin = () => {
     return (
