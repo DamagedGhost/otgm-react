@@ -41,7 +41,6 @@ function App() {
         <Route path="/blogs/blog2" element={<Blog2Page />} />
         <Route path="/contacto" element={<ContactoPage />} />
         <Route path="/carrito" element={<CarritoPage />} />
-        <Route path="/carrito" element={<CarritoPage />} />
         <Route path="/compra" element={<CompraPage />} />
         <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
         <Route path="/pago-error" element={<PagoErrorPage />} />
