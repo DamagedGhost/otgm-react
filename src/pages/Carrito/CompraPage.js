@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const CompraPage = () => {
   const navigate = useNavigate();
 
-  // Carrito vacío o por conectar a datos reales
+  // Carrito vacío o por conectar a datos realess
   const cart = [];
 
   const total = cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
