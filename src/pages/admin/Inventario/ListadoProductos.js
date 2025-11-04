@@ -1,6 +1,25 @@
 import AdminTemplate from "../../../templates/AdminTemplate";
+// 1. Importa tu hook
+import useProductsViewModel from './useProductsViewModel'; // Asegúrate que la ruta sea correcta
 
 const ListadoProductos = () => {
+    
+    // 2. Obtiene los productos del hook
+    const { products } = useProductsViewModel();
+
+    // 3. Define las funciones que manejarán las acciones
+    const handleEditar = (id) => {
+        console.log(`Editar producto con ID: ${id}`);
+        // Aquí puedes, por ejemplo, navegar a una página de edición
+        // o abrir un modal pasando el 'id'
+    };
+
+    const handleEliminar = (id) => {
+        console.log(`Eliminar producto con ID: ${id}`);
+        // Aquí iría tu lógica para llamar a la API de eliminación,
+        // mostrar una confirmación, etc.
+    };
+
     return (
         <AdminTemplate>
             <div className="container-fluid">
@@ -21,7 +40,39 @@ const ListadoProductos = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* Se llenará con JS */}
+                    {/* 4. Aquí está la magia: Mapea los productos a filas de la tabla */}
+                    {products.map((producto) => (
+                        <tr key={producto.id}> {/* 'key' es obligatorio y debe ser único */}
+                            <td>{producto.codigo}</td>
+                            <td>{producto.nombre}</td>
+                            <td>${producto.precio.toLocaleString('es-CL')}</td> {/* Formato de moneda */}
+                            <td>{producto.stock}</td>
+                            <td>{producto.stockCritico}</td>
+                            <td>{producto.categoria}</td>
+                            <td>
+                                {/* 5. Asigna las funciones a los botones */}
+                                <button 
+                                    className="btn btn-sm btn-primary"
+                                    onClick={() => handleEditar(producto.id)}
+                                >
+                                    Editar
+                                </button>
+                                <button 
+                                    className="btn btn-sm btn-danger ms-2" /* ms-2 para dar espacio */
+                                    onClick={() => handleEliminar(producto.id)}
+                                >
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+
+                    {/* Si no hay productos, puedes mostrar un mensaje */}
+                    {products.length === 0 && (
+                        <tr>
+                            <td colSpan="7" className="text-center">No hay productos para mostrar</td>
+                        </tr>
+                    )}
                 </tbody>
                 </table>
             </div>
