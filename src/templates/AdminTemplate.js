@@ -6,4 +6,4 @@ const AdminTemplate = ({ children }) => (
     <main>{children}</main>
   </>
 );
-export default AdminTemplate;
+export default AdminTemplate; 

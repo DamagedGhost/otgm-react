@@ -1,74 +1,142 @@
-import AdminTemplate from "../../../templates/AdminTemplate"
-import React from "react";
+import AdminTemplate from "../../../templates/AdminTemplate";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import useProductsViewModel from "../../../viewmodels/useProductsViewModel"; // 1. Importar el hook
 
 const NuevoProducto = () => {
+    const navigate = useNavigate();
+    const { addProducto } = useProductsViewModel(); // 2. Traer la función 'addProducto'
+
+    const [formData, setFormData] = useState({
+        codigo: '',
+        title: '', // Cambiado de 'nombre' a 'title' para coincidir con tu hook
+        descripcion: '',
+        price: '', // 'price' en lugar de 'precio'
+        stock: '',
+        stockCritico: '',
+        categoria: '',
+        image: '', // <-- CAMPO NUEVO AÑADIDO
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        // 3. Llamar a la función del hook con los datos del formulario
+        addProducto(formData); 
+        
+        alert('¡Producto agregado con éxito!');
+        // 4. Redirigir al listado para ver el nuevo producto
+        navigate('/Admin/Inventario/ListadoProductos'); 
+    };
+
     return (
     <AdminTemplate>
-        {/*TODO: Formulario de registro (extraido de otro archivo, tarea de formulario) */}
-        <section className="flex-grow-1 p-4 bg-light" id="main-content">
-        <h1>Nuevo Producto</h1>
-        <form id="registrationForm" onsubmit="validarFormulario(event)">
-            {/* Código Producto */}
-            <div className="Codigo-Producto">
-            <label htmlFor="codIntput">Código Producto *</label>
-            <input type="text" id="codIntput" oninput="validarCodigoProducto()" required className="form-control" />
-            <span id="codIntputFeedback" className="invalid-feedback" style={{color: 'red'}} />
+        <section className="flex-grow-1" id="main-content">
+            <div className="bg-white p-4 shadow-sm rounded">
+                <h1>Nuevo Producto</h1>
+                
+                <form id="registrationForm" onSubmit={handleSubmit}>
+                    
+                    <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="codigo">Código Producto *</label>
+                            <input 
+                                type="text" id="codigo" name="codigo"
+                                value={formData.codigo} onChange={handleChange}
+                                required className="form-control" 
+                            />
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="title">Nombre Producto *</label>
+                            <input 
+                                type="text" id="title" name="title"
+                                value={formData.title} onChange={handleChange}
+                                required className="form-control" 
+                            />
+                        </div>
+                    </div>
+
+                    {/* --- CAMPO DE IMAGEN AÑADIDO --- */}
+                    <div className="mb-3">
+                        <label htmlFor="image">URL de la Imagen</label>
+                        <input 
+                            type="text" 
+                            id="image" 
+                            name="image"
+                            value={formData.image} 
+                            onChange={handleChange}
+                            className="form-control" 
+                            placeholder="https://ejemplo.com/imagen.png"
+                        />
+                    </div>
+                    {/* --- FIN DE CAMPO AÑADIDO --- */}
+
+                    <div className="mb-3">
+                        <label htmlFor="descripcion">Descripción</label>
+                        <textarea 
+                            id="descripcion" name="descripcion"
+                            value={formData.descripcion} onChange={handleChange}
+                            className="form-control" rows="3"
+                        />
+                    </div>
+                    
+                    <div className="row">
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="price">Precio *</label>
+                            <input 
+                                type="number" id="price" name="price"
+                                value={formData.price} onChange={handleChange}
+                                required className="form-control" 
+                            />
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="stock">Stock *</label>
+                            <input 
+                                type="number" id="stock" name="stock"
+                                value={formData.stock} onChange={handleChange}
+                                required className="form-control" 
+                            />
+                        </div>
+                        <div className="col-md-4 mb-3">
+                            <label htmlFor="stockCritico">Stock Crítico</label>
+                            <input 
+                                type="number" id="stockCritico" name="stockCritico"
+                                value={formData.stockCritico} onChange={handleChange}
+                                className="form-control" 
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="categoria" className="form-label">Categoría *</label>
+                        <select 
+                            id="categoria" name="categoria"
+                            value={formData.categoria} onChange={handleChange}
+                            className="form-select" required
+                        >
+                            <option value="">Seleccione categoría</option>
+                            <option value="Guitarras">Guitarras</option>
+                            <option value="Teclados">Teclados</option>
+                            <option value="Baterías">Baterías</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" id="submitBtn" className="btn btn-primary mt-3">
+                            Agregar Producto
+                        </button>
+                    </div>
+                </form>
             </div>
-            {/* Nombre Producto */}
-            <div className="Nombre-producto">
-            <label htmlFor="nombreProductoInput">Nombre Producto *</label>
-            <input type="text" id="nombreProductoInput" oninput="validarNombreProducto()" required className="form-control" />
-            <span id="nombreProductoFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            {/* Descripción */}
-            <div className="descripcion">
-            <label htmlFor="descripcionInput">Descripción</label>
-            <input type="text" id="descripcionInput" oninput="validarDescripcionProducto()" required className="form-control" />
-            <span id="descripcionFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            {/* Precio */}
-            <div className="precio">
-            <label htmlFor="precioInput">Precio *</label>
-            <input type="text" id="precioInput" oninput="validarPrecioProducto()" required className="form-control" />
-            <span id="precioFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            {/* Stock */}
-            <div>
-            <label htmlFor="stockInput">Stock *</label>
-            <input type="number" id="stockInput" oninput="validarStockProducto()" required className="form-control" />
-            <span id="stockFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            {/* Stock Crítico */}
-            <div>
-            <label htmlFor="stockCriticoInput">Stock Crítico</label>
-            <input type="number" id="stockCriticoInput" oninput="validarStockCriticoProducto()" className="form-control" />
-            <span id="stockCriticoFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            {/* Categoria (lado a lado) */}
-            <div className="row g-3 my-3">
-            <div className="col-md-6">
-                <label htmlFor="regionSelect" className="form-label">Categoría *</label>
-                <select id="regionSelect" className="form-select" required onchange="validarCategoriaProducto()">
-                <option value disabled selected>Seleccione categoría</option>
-                <option value="cuerda">Cuerda</option>
-                <option value="percusion">Percusión</option>
-                <option value="electronico">Electrónico</option>
-                </select>
-                <span id="categoriaFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            <div className="col-md-6">
-                <label htmlFor="imagenInput" className="form-label">Imagen</label>
-                <input type="file" id="imagenInput" className="form-control" accept="image/*" onchange="validarImagenProducto()" />
-                <span id="imagenFeedback" className="invalid-feedback" style={{color: 'red'}} />
-            </div>
-            </div>
-            {/* Botón */}
-            <div>
-            <button type="submit" id="submitBtn" className="btn btn-primary mt-3" onclick="validarFormulario(event)">
-                Agregar Producto
-            </button>
-            </div>
-        </form>
         </section>
     </AdminTemplate>
     );

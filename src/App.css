@@ -1,7 +1,6 @@
 /* main-styles.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
 
-
 /* Colores personalizados */
 :root {
     --yale-blue: #0d3b66;
@@ -11,125 +10,32 @@
     --tomato: #f95738;
 }
 
-.navbar-custom {
-  background-color: var(--yale-blue) !important;
-}
-
-/* Usando la fuente Montserrat desde Google Fonts, importada en <head>*/
-
-/* Estilos para los encabezados*/
-.h1 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-}
-h2 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* Estilos para los párrafos */
-p {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-
-
-/* Estilo general para nav */
-#header {
-    background-color: var(--yale-blue);
-    color: white;
-}
-
-#main {
-  margin-left: 250px; /* Ancho del sidebar */
-  padding: 20px;
-  min-height: calc(100vh - 64px); /* Altura total menos la altura del header */
-}
-
-.product-card-img-top {
-  width: 140px;
-  height: 200px;   
-  object-fit: cover;
-}
-
-.product-card {
-  max-width: 250px; 
-  margin: auto;  
-
-}
-
-/* Estilos react para las paginas admin */
+/* ======================================= */
+/* ESTILOS GENERALES (PÚBLICO Y ADMIN)     */
+/* ======================================= */
 
 body {
-  background: #ffc9c9;
-  background: linear-gradient(90deg,
-   rgba(255, 201, 201, 1) 0%,
-   rgba(255, 217, 251, 1) 28%,
-    rgba(237, 204, 255, 1) 62%,
-     rgba(210, 250, 245, 1) 92%);
+    background: #ffc9c9;
+    background: linear-gradient(90deg,
+        rgba(255, 201, 201, 1) 0%,
+        rgba(255, 217, 251, 1) 28%,
+        rgba(237, 204, 255, 1) 62%,
+        rgba(210, 250, 245, 1) 92%);
 }
 
-/* Estilos para los encabezados*/
-h1 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+/* Estilos de fuente consolidados */
+h1, .h1, h2, .h2, p {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
-h2 {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+h1, .h1 {
+    font-weight: 500;
 }
 
-/* Estilos para los párrafos */
-p {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-
-#sidebar{
-    background-color: #34495e;
-    color: white;
-    padding: 10px;
-    height: 100vh;
-    position: fixed;
-    width: 200px;
-    top: 0;
-    left: 0;
-    border-style: solid;
-    border-width: 0 1px 0 0;
-    border-color: #ecf0f1;
-}
-
-#li {
-    color: white;
-    margin-bottom: -15px;
-}
-
-#li {
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-#li:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #ecf0f1;
-    cursor: pointer;
-}
-
-/* Option hover/active styling (note: support varies by browser) */
+/* Estilos para <option> */
 option {
     transition: background-color 0.15s ease, color 0.15s ease;
     cursor: pointer;
@@ -143,25 +49,88 @@ option:checked {
     color: #ecf0f1;
 }
 
-#main-content{
-    margin-left: 220px;
-    padding: 20px;
-    margin-top: 60px;
-    min-height: calc(100vh - 60px);
-    
+/* ======================================= */
+/* ESTILOS SITIO PÚBLICO                   */
+/* ======================================= */
+
+.navbar-custom {
+    background-color: var(--yale-blue) !important;
 }
 
-#header{
+/* Este #header es para el sitio PÚBLICO */
+#header {
+    background-color: var(--yale-blue);
+    color: white;
+}
+
+.product-card-img-top {
+    width: 140px;
+    height: 200px;   
+    object-fit: cover;
+}
+
+.product-card {
+    max-width: 250px; 
+    margin: auto;  
+}
+
+/* ======================================= */
+/* ESTILOS PANEL DE ADMINISTRACIÓN         */
+/* ======================================= */
+
+/* --- Layout Fijo del Admin --- */
+
+#sidebar {
+    background-color: #34495e;
+    color: white;
+    padding: 10px;
+    height: 100vh;
+    position: fixed;
+    width: 200px; /* Ancho del Sidebar */
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    border-color: #ecf0f1;
+}
+
+/* Este #header es para el ADMIN (sobrescribe al público) */
+#header {
     background-color: #34495e;
     color: white;
     padding: 10px 20px;
     position: fixed;
-    width: calc(100% - 200px);
+    width: calc(100% - 200px); /* Ancho 100% MENOS el sidebar */
     top: 0;
-    left: 200px;
+    left: 200px; /* Inicia JUSTO donde termina el sidebar */
     z-index: 1000;
     height: 60px;
 }
+
+#main-content {
+    /* LA CORRECCIÓN ESTÁ AQUÍ */
+    margin-left: 200px; /* Debe ser IGUAL al width de #sidebar */
+    margin-top: 60px; /* Debe ser IGUAL al height de #header */
+    
+    padding: 20px;
+    min-height: calc(100vh - 60px);
+}
+
+/* --- Estilos para el NUEVO NavbarVerticalAdmin.js --- */
+/* (Esto reemplaza las reglas #li y #li:hover) */
+
+#sidebar .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 4px;
+}
+
+#sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+/* --- Otros estilos del Admin --- */
 
 #grafico-1 {
     max-width:700px;
@@ -195,4 +164,57 @@ option:checked {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: auto;
+}
+
+/* ======================================= */
+/* ESTILOS DE ANIMACIÓN PÁGINA DE PERFIL   */
+/* ======================================= */
+
+/* Definición de la animación (Fade In y Slide Up) */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clase para la primera tarjeta (Avatar) */
+.profile-card-animation {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s ease-out forwards;
+}
+
+/* Clase para las tarjetas de detalles (Formulario) */
+.profile-details-animation {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.2s ease-out forwards; /* 0.2s de retraso */
+}
+
+/* animaciones con retraso */
+.profile-card-animation-1 {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.1s ease-out forwards;
+}
+
+.profile-card-animation-2 {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.2s ease-out forwards;
+}
+
+.profile-card-animation-3 {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.3s ease-out forwards;
+}
+.profile-card-animation-4 {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.4s ease-out forwards;
+}
+
+.profile-card-animation-5 {
+  opacity: 0; /* Inicia invisible */
+  animation: fadeInSlideUp 0.4s 0.5s ease-out forwards;
 }

@@ -13,7 +13,7 @@ const MainInventario = () => {
                 {/* Contenido adicional del panel de administración */}
             </div>
             <div className="d-flex flex-column gap-3 p-4 col-5" id="user-menu">
-                <Button label="Crear producto" href="/CrearProducto" />
+                <Button label="Crear producto" href="/Admin/Inventario/NuevoProducto" />
                 <Button label="Mostrar productos" href="/MostrarProductos" />
                 <Button label="Productos críticos" href="/ProductosCriticos" />
                 <Button label="Reportes" href="/Reportes" />
