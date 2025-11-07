@@ -57,7 +57,7 @@ function App() {
         <Route path="/Admin/Inventario" element={<MainInventario />} />
         <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
         <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
-        <Route path="/Admin/Inventario/EditarProducto" element={<EditarProducto />} />
+        <Route path="/Admin/Inventario/EditarProducto/:id" element={<EditarProducto />} /> {/* <--- ASÍ DEBE QUEDAR */}
         <Route path="/Admin/Inventario/ProductoReporte" element={<ProductoReporte />} />
         <Route path="/Admin/Inventario/ProductosCriticos" element={<ProductosCriticos />} />
         {/* ADMIN USUARIOS ROUTES */}

@@ -62,8 +62,16 @@ const EditarProducto = () => {
 
     return (
         <AdminTemplate>
-            <section className="flex-grow-1" id="main-content">
-                <div className="bg-white p-4 shadow-sm rounded">
+            <section className="flex-grow-1" id="main-content" role="main">
+                <div className="container-fluid py-4">
+                    <nav aria-label="breadcrumb" className="mb-3">
+                        <ol className="breadcrumb mb-0">
+                            <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
+                            <li className="breadcrumb-item"><a href="/Admin/Inventario">Inventario</a></li>
+                            <li className="breadcrumb-item active" aria-current="page">Editar Producto</li>
+                        </ol>
+                    </nav>
+                    <div className="bg-white p-4 shadow-sm rounded">
                     <h1>Editar Producto (ID: {formData.id})</h1>
                     
                     <form id="editForm" onSubmit={handleSubmit}>
@@ -159,6 +167,7 @@ const EditarProducto = () => {
                             </button>
                         </div>
                     </form>
+                    </div>
                 </div>
             </section>
         </AdminTemplate>

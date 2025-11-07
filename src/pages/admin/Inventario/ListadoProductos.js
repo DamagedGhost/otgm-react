@@ -21,9 +21,26 @@ const ListadoProductos = () => {
 
     return (
         <AdminTemplate>
-            <div className="flex-grow-1" id="main-content">
-                <div className="bg-white p-4 shadow-sm rounded">
-                    <h2 className="h5 mb-4">Listado de Productos</h2>
+            <main className="flex-grow-1" id="main-content" role="main">
+            <div className="container-fluid py-4">
+                <nav aria-label="breadcrumb" className="mb-3">
+                <ol className="breadcrumb mb-0">
+                    <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
+                    <li className="breadcrumb-item"><a href="/Admin/Inventario">Inventario</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Listado Productos</li>
+                </ol>
+                </nav>
+
+                <header className="d-flex align-items-start justify-content-between mb-4">
+                <div>
+                    <h1 className="h4 mb-1">Gestión de Inventario</h1>
+                    <p className="text-muted mb-0">Visualiza, crea y administra los productos del inventario.</p>
+                </div>
+                <div className="d-flex gap-2">
+                    <a className="btn btn-outline-primary" href="/Admin/Inventario/NuevoProducto">Crear producto</a>
+                    <a className="btn btn-primary" href="/Admin/Inventario/ListadoProductos">Mostrar productos</a>
+                </div>
+                </header>
                     <div className="table-responsive">
                         <table id="dataTable" className="table table-striped table-bordered">
                             <thead>
@@ -74,7 +91,7 @@ const ListadoProductos = () => {
                         </table>
                     </div>
                 </div>
-            </div>
+            </main>
         </AdminTemplate>
     );
 };
