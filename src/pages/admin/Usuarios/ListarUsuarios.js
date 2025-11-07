@@ -19,10 +19,11 @@ const ListarUsuarios = () => {
             deleteUser(id);
         }
     };
+
     
     const handleVerHistorial = (id) => {
         // Redirige al historial de compra (deberás implementar esta ruta)
-        navigate(`/Admin/Usuarios/HistorialCompra`); 
+        navigate(`/Admin/Usuarios/HistorialCompra/${id}`); // <--- Faltaba el ${id}
     };
 
 

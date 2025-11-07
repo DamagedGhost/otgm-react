@@ -1,22 +1,34 @@
-import AdminTemplate from "../../../templates/AdminTemplate"
-import Button from "../../../components/atoms/Button"
+import React from 'react';
+import AdminTemplate from "../../../templates/AdminTemplate";
+import Button from "../../../components/atoms/Button";
 
 const Usuario = () => {
     return (
         <AdminTemplate>
-            <div className="flex-grow-1" id="main-content">
-            <div className="d-flex flex-column align-items-center bg-light border rounded p-4 gap-4 shadow-sm">
-            <div>
-                <h2 className="h5 mb-4">Menu usuario</h2>
-                <p>Desde aquí puedes crear, mostrar y editar usuarios.</p>
-                {/* Contenido adicional del panel de administración */}
-            </div>
-                <div className="d-flex flex-column gap-3 p-4 col-5">
-                    <Button label={'Agregar usuario'}/>
-                    <Button label={'Mostrar usuarios'}/>
+            <main className="flex-grow-1" id="main-content" role="main">
+                <div className="container-fluid py-4">
+                    <nav aria-label="breadcrumb" className="mb-3">
+                        <ol className="breadcrumb mb-0">
+                            <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
+                            <li className="breadcrumb-item active" aria-current="page">Usuarios</li>
+                        </ol>
+                    </nav>
+
+                    <header className="d-flex align-items-start justify-content-between mb-4">
+                        <div>
+                            <h1 className="h4 mb-1">Gestión de Usuarios</h1>
+                            <p className="text-muted mb-0">Visualiza, crea y administra los usuarios y clientes.</p>
+                        </div>
+                        <div className="d-flex gap-2">
+                            {/* Usamos el componente Button con 'href' para navegar */}
+                            <Button label="Agregar Usuario" href="/Admin/Usuarios/AgregarUsuario" />
+                            <Button label="Listar Usuarios" href="/Admin/Usuarios/ListarUsuarios" />
+                        </div>
+                    </header>
+                    
+                    {/* Aquí podrías agregar tarjetas de resumen como en Inventario */}
                 </div>
-            </div>
-            </div>
+            </main>
         </AdminTemplate>
     )
 }

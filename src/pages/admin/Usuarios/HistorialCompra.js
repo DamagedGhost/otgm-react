@@ -1,16 +1,30 @@
 import AdminTemplate from "../../../templates/AdminTemplate";
+import { useParams } from 'react-router-dom';
+import useUserViewModel from "../../../viewmodels/useUserViewModel";
+import useBoletaViewModel from "../../../viewmodels/useBoletaViewModel";
 
 const HistorialCompra = () => {
+    const { id } = useParams(); // ID del Usuario
+    const { getUserById } = useUserViewModel();
+    const { getBoletasByUserId } = useBoletaViewModel();
+
+    const userId = parseInt(id, 10);
+    const user = getUserById(userId);
+    const historial = getBoletasByUserId(userId);
+
+    if (!user) {
+        return <AdminTemplate><p>Usuario no encontrado</p></AdminTemplate>
+    }
+
     return (
         <AdminTemplate>
             <div className="flex-grow-1" id="main-content">
                 <div className="bg-white p-4 shadow-sm rounded">
-                        <h2 className="h5 mb-4">Historial de Compras del Usuario</h2>
-                        <div>
-                            <p>Nombre: </p>
-                            <p>RUT: </p>
-                            <p>Correo: </p>
-                        </div>
+                    <h2 className="h5 mb-4">Historial de Compras de: {user.nombre} {user.apellidos}</h2>
+                    <div>
+                        <p><strong>RUT:</strong> {user.rut}</p>
+                        <p><strong>Correo:</strong> {user.correo}</p>
+                    </div>
                     <div>
                         <table id="dataTable" className="table table-striped table-bordered">
                             <thead>
@@ -19,11 +33,23 @@ const HistorialCompra = () => {
                                     <th>Fecha</th>
                                     <th>Total</th>
                                     <th>Estado</th>
-                                    <th>Detalles</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* Se llenará con JS */}
+                                {historial.length > 0 ? (
+                                    historial.map((boleta) => (
+                                        <tr key={boleta.id}>
+                                            <td>{boleta.id}</td>
+                                            <td>{boleta.fecha}</td>
+                                            <td>${boleta.total.toLocaleString()}</td>
+                                            <td>{boleta.estado}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="text-center">Este usuario no tiene compras.</td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

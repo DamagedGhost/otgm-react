@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// TODOS TUS IMPORTS ORIGINALES
+import { Routes, Route } from 'react-router-dom'; // <--- SIN 'Router'
 import HomePage from './pages/HomePage';
 import BlogsPage from './pages/Blogs/BlogsPage';
 import Blog1Page from './pages/Blogs/Blog1Page';
@@ -30,51 +31,72 @@ import ProductoReporte from './pages/admin/Inventario/ProductoReporte';
 import ProductosCriticos from './pages/admin/Inventario/ProductosCriticos';
 import Reporte from './pages/admin/Reporte/Reporte';
 import Perfil from './pages/admin/Perfil/Perfil';
+
+// NUEVOS IMPORTS DE AUTENTICACIÓN Y CATEGORÍAS
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import MainCategorias from './pages/admin/Categoria/MainCategoria';
+import ListarCategorias from './pages/admin/Categoria/ListarCategorias';
+import NuevaCategoria from './pages/admin/Categoria/NuevaCategoria';
+
+// CSS
 import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/registro" element={<RegistroPage />} />
-        <Route path="/productos" element={<ProductosPage />} />
-        <Route path="/categoria" element={<CategoriasPage />} />
-        <Route path="/productos/:title" element={<DetallesProdPage />} />
-        <Route path="/nosotros" element={<NostrosPage />} />
-        <Route path="/blogs" element={<BlogsPage />} />
-        <Route path="/blogs/blog1" element={<Blog1Page />} />
-        <Route path="/blogs/blog2" element={<Blog2Page />} />
-        <Route path="/contacto" element={<ContactoPage />} />
-        <Route path="/carrito" element={<CarritoPage />} />
-        <Route path="/compra" element={<CompraPage />} />
-        <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
-        <Route path="/pago-error" element={<PagoErrorPage />} />
-        {/* ADMIN ROUTES */}
+    // YA NO SE NECESITA EL <Router> AQUÍ
+    <Routes>
+      {/* --- RUTAS PÚBLICAS (TODAS TUS RUTAS ORIGINALES) --- */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/registro" element={<RegistroPage />} />
+      <Route path="/productos" element={<ProductosPage />} />
+      <Route path="/categoria" element={<CategoriasPage />} />
+      <Route path="/productos/:title" element={<DetallesProdPage />} />
+      <Route path="/nosotros" element={<NostrosPage />} />
+      <Route path="/blogs" element={<BlogsPage />} />
+      <Route path="/blogs/blog1" element={<Blog1Page />} />
+      <Route path="/blogs/blog2" element={<Blog2Page />} />
+      <Route path="/contacto" element={<ContactoPage />} />
+      <Route path="/carrito" element={<CarritoPage />} />
+      <Route path="/compra" element={<CompraPage />} />
+      <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
+      <Route path="/pago-error" element={<PagoErrorPage />} />
+
+      {/* --- RUTAS DE ADMIN PROTEGIDAS --- */}
+      <Route element={<ProtectedRoute />}>
         <Route path="/Admin" element={<AdminHomePage />} />
+        
         {/* ADMIN INVENTARIO ROUTES */}
         <Route path="/Admin/Inventario" element={<MainInventario />} />
         <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
         <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
-        <Route path="/Admin/Inventario/EditarProducto/:id" element={<EditarProducto />} /> {/* <--- ASÍ DEBE QUEDAR */}
+        <Route path="/Admin/Inventario/EditarProducto/:id" element={<EditarProducto />} />
         <Route path="/Admin/Inventario/ProductoReporte" element={<ProductoReporte />} />
         <Route path="/Admin/Inventario/ProductosCriticos" element={<ProductosCriticos />} />
+        
         {/* ADMIN USUARIOS ROUTES */}
         <Route path="/Admin/Usuarios" element={<Usuario />} />
         <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
         <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
-        <Route path="/Admin/Usuarios/EditarUsuario" element={<EditarUsuario />} />
-        <Route path="/Admin/Usuarios/HistorialCompra" element={<HistorialCompra />} />
+        <Route path="/Admin/Usuarios/EditarUsuario/:id" element={<EditarUsuario />} />
+        <Route path="/Admin/Usuarios/HistorialCompra/:id" element={<HistorialCompra />} />
+        
         {/* ADMIN BOLETA ROUTES */}
         <Route path="/Admin/Boleta" element={<MainBoleta />} />
         <Route path="/Admin/Boleta/MostrarBoletas" element={<MostrarBoletas />} />
+        
+        {/* ADMIN CATEGORIAS ROUTES */}
+        <Route path="/Admin/Categorias" element={<MainCategorias />} />
+        <Route path="/Admin/Categorias/ListarCategorias" element={<ListarCategorias />} />
+        <Route path="/Admin/Categorias/NuevaCategoria" element={<NuevaCategoria />} />
+
         {/* ADMIN REPORTE ROUTE */}
         <Route path="/Admin/Reporte" element={<Reporte />} />
+        
         {/* ADMIN PERFIL ROUTE */}
         <Route path="/Admin/Perfil" element={<Perfil />} />
-      </Routes>
-    </Router>
+      </Route>
+    </Routes>
   );
 }
 

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import MainTemplate from '../../templates/MainTemplate';
 import Button from '../../components/atoms/Button';
+import { useAuth } from '../../context/AuthContext'; // 1. Importar useAuth
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const { login } = useAuth(); // 2. Obtener la función de login
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -14,8 +16,8 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Datos de login:', formData);
-    // Aquí podrías agregar validación o conexión con tu backend
+    // 3. Llamar a la función de login del contexto
+    login(formData.email, formData.password);
   };
 
   return (
@@ -32,26 +34,24 @@ const LoginPage = () => {
                     type="email"
                     className="form-control"
                     id="email"
-                    placeholder="correo@ejemplo.com"
+                    placeholder="admin@mail.com" // Pista para probar
                     value={formData.email}
                     onChange={handleChange}
                     required
                   />
                 </div>
-
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">Contraseña</label>
                   <input
                     type="password"
                     className="form-control"
                     id="password"
-                    placeholder="********"
+                    placeholder="123" // Pista para probar
                     value={formData.password}
                     onChange={handleChange}
                     required
                   />
                 </div>
-
                 <div className="d-grid">
                   <Button label="Ingresar" variant="primary" type="submit" />
                 </div>

@@ -1,15 +1,9 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-
-/*
-  Esta es tu barra lateral, pero "React-ificada":
-  1. Se corrigieron todos los 'classname' y 'class' a 'className'.
-  2. Se reemplazaron todos los SVGs por iconos de Bootstrap (<i className="...">).
-  3. Se reemplazaron todas las etiquetas <a> y onclick por <Link> de React Router.
-  4. Se mantiene la estructura de IDs (#sidebar, #header) para que tu CSS actual funcione.
-*/
+import { useAuth } from '../../context/AuthContext'; // 1. Importar useAuth
 
 const NavbarVerticalAdmin = () => {
+    const { user, logout } = useAuth(); // 2. Obtener usuario y función logout
     return (
         <div>
             {/* --- SIDEBAR --- */}
@@ -70,6 +64,13 @@ const NavbarVerticalAdmin = () => {
                                     Clientes
                                 </Link>
                             </li>
+
+                            <li className="nav-item">
+                                <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Categorias">
+                                    <i className="bi bi-tags-fill"></i>
+                                    Categorías
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -93,13 +94,24 @@ const NavbarVerticalAdmin = () => {
                         </ul>
                     </div>
 
-                    {/* Perfil de Usuario */}
-                    <div className="d-flex align-items-center p-3 border-top border-secondary" id="admin-user">
-                        <i className="bi bi-person-circle fs-3 me-2"></i>
-                        <div className="d-flex flex-column">
-                            <span className="fw-bold">Nombre Usuario</span>
-                            <small className="text-white-50">Administrador</small>
+{/* Perfil de Usuario */}
+                    <div className="d-flex flex-column p-3 border-top border-secondary" id="admin-user">
+                        <div className="d-flex align-items-center">
+                            <i className="bi bi-person-circle fs-3 me-2"></i>
+                            <div className="d-flex flex-column">
+                                {/* 3. Mostrar nombre de usuario real */}
+                                <span className="fw-bold">{user ? user.nombre : 'Usuario'}</span>
+                                <small className="text-white-50">{user ? user.rol : 'Admin'}</small>
+                            </div>
                         </div>
+                        {/* 4. Botón de Cerrar Sesión */}
+                        <button 
+                            className="btn btn-sm btn-outline-danger mt-3" 
+                            onClick={logout}
+                        >
+                            <i className="bi bi-box-arrow-right me-1"></i>
+                            Cerrar Sesión
+                        </button>
                     </div>
                 </div>
 
