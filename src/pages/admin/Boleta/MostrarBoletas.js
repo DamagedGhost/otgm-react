@@ -7,8 +7,14 @@ const MostrarBoletas = () => {
     return (
         <AdminTemplate>
         <main className="flex-grow-1" id="main-content" role="main">
-            {/* ... (tu nav breadcrumb) ... */}
-            <div className="container-fluid p-4 bg-white shadow-sm rounded">
+            <div className="container-fluid py-4">
+                <nav aria-label="breadcrumb" className="mb-3">
+                    <ol className="breadcrumb mb-0">
+                    <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
+                    <li className="breadcrumb-item"><a href="/Admin/Boletas">Boletas</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Listado</li>
+                </ol>
+            </nav>
             <h2 className="h5 mb-4">Listado de Boletas</h2>
             <table id="dataTable" className="table table-striped table-bordered">
                 <thead>

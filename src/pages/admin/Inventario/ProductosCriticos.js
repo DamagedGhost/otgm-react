@@ -11,7 +11,13 @@ const ProductosCriticos = () => {
         <AdminTemplate>
             <main className="flex-grow-1" id="main-content" role="main">
                 <div className="container-fluid py-4">
-                    {/* ... (tu nav breadcrumb) ... */}
+                    <nav aria-label="breadcrumb" className="mb-3">
+                        <ol className="breadcrumb mb-0">
+                        <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
+                        <li className="breadcrumb-item"><a href="/Admin/Inventario">Inventario</a></li>
+                        <li className="breadcrumb-item active" aria-current="page">Productos Críticos</li>
+                        </ol>
+                    </nav>
                 
                 <div className="bg-white p-4 shadow-sm rounded">
                     
