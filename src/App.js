@@ -1,4 +1,5 @@
 // TODOS TUS IMPORTS ORIGINALES
+import React from 'react';
 import { Routes, Route } from 'react-router-dom'; // <--- SIN 'Router'
 import HomePage from './pages/HomePage';
 import BlogsPage from './pages/Blogs/BlogsPage';
@@ -43,7 +44,8 @@ import './App.css';
 
 function App() {
   return (
-    // YA NO SE NECESITA EL <Router> AQUÍ
+    <>
+    
     <Routes>
       {/* --- RUTAS PÚBLICAS (TODAS TUS RUTAS ORIGINALES) --- */}
       <Route path="/" element={<HomePage />} />
@@ -97,6 +99,11 @@ function App() {
         <Route path="/Admin/Perfil" element={<Perfil />} />
       </Route>
     </Routes>
+
+    <div>
+      Learn React
+    </div>
+    </>
   );
 }
 
