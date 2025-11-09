@@ -25,6 +25,7 @@ function FormGrupo({ label, type, placeholder, value, onChange, name, required, 
           onChange={onChange}
           name={name}
           required={required}
+          id={name}
         />
       )}
       {error && <span className="text-danger small">{error}</span>}

@@ -1,19 +1,21 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-// Importamos MemoryRouter para simular el navegador en las pruebas
 import { MemoryRouter } from "react-router-dom";
+// Importa tu AuthProvider
+import { AuthProvider } from "../src/context/AuthContext";
 import App from "../src/App";
 
 describe("Componente App", () => {
   it('debería renderizar correctamente y mostrar "Learn React"', () => {
-    // Envolvemos <App /> dentro de <MemoryRouter>
+    // Prueba de Renderizado 
     render(
       <MemoryRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </MemoryRouter>
     );
-    
-    // Verificamos que el texto esté ahí
+
     expect(screen.getByText(/learn react/i)).toBeTruthy();
   });
 });

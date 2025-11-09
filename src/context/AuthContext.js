@@ -3,7 +3,7 @@ import useUserViewModel from '../viewmodels/useUserViewModel';
 import { useNavigate } from 'react-router-dom';
 
 const AUTH_KEY = 'authUser'; // Clave para guardar en localStorage
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     
