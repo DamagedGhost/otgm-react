@@ -11,7 +11,7 @@ const MostrarBoletas = () => {
                 <nav aria-label="breadcrumb" className="mb-3">
                     <ol className="breadcrumb mb-0">
                     <li className="breadcrumb-item"><a href="/Admin">Administración</a></li>
-                    <li className="breadcrumb-item"><a href="/Admin/Boletas">Boletas</a></li>
+                    <li className="breadcrumb-item"><a href="/Admin/Boleta">Boletas</a></li>
                     <li className="breadcrumb-item active" aria-current="page">Listado</li>
                 </ol>
             </nav>

@@ -1,7 +1,10 @@
 import AdminTemplate from "../../../templates/AdminTemplate";
 import Button from "../../../components/atoms/Button";
+import useBoletaViewModel from "../../../viewmodels/useBoletaViewModel"; // 1. Importar
 
 const MainBoleta = () => {
+  const { boletas } = useBoletaViewModel(); // 2. Obtener boletas
+
   return (
     <AdminTemplate>
       <main className="flex-grow-1" id="main-content" role="main">
@@ -30,7 +33,8 @@ const MainBoleta = () => {
                 <div className="card shadow-sm profile-card-animation-1">
                   <div className="card-body">
                     <small className="text-muted">Total emitidas</small>
-                    <div className="h5 mt-2">- llenar con JS -</div>
+                    {/* 3. Dato real */}
+                    <div className="h5 mt-2">{boletas.length} Órdenes</div>
                   </div>
                 </div>
               </div>
@@ -38,7 +42,8 @@ const MainBoleta = () => {
                 <div className="card shadow-sm profile-card-animation-4">
                   <div className="card-body">
                     <small className="text-muted">Última emisión</small>
-                    <div className="h5 mt-2">- llenar con JS -</div>
+                    {/* 4. Dato real (del mock) */}
+                    <div className="h5 mt-2">{boletas.length > 0 ? boletas[boletas.length - 1].fecha : 'N/A'}</div>
                   </div>
                 </div>
               </div>

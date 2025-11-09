@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // 1. Importar useEffect
 import MainTemplate from '../../templates/MainTemplate';
 import Button from '../../components/atoms/Button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'; // 2. Importar useAuth
 
 const CompraPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth(); // 3. Obtener el usuario logueado
 
-  // Carrito vacío o por conectar a datos realess
-  const cart = [];
+  // --- ARREGLO DEL CARRITO ---
+  // Cargar carrito desde localStorage
+  const [cart, setCart] = useState([]);
+  useEffect(() => {
+    const data = localStorage.getItem('cart');
+    setCart(data ? JSON.parse(data) : []);
+  }, []);
+  // --- FIN ARREGLO CARRITO ---
 
-  const total = cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  const total = cart.reduce((acc, item) => acc + item.price * item.cantidad, 0);
 
   const [form, setForm] = useState({
     nombre: '',
@@ -22,6 +30,23 @@ const CompraPage = () => {
     indicaciones: '',
   });
 
+  // --- LÓGICA DE AUTOCOMPLETADO ---
+  // 4. Usar useEffect para rellenar el formulario si el usuario cambia
+  useEffect(() => {
+    if (user) {
+      setForm(prevForm => ({
+        ...prevForm,
+        nombre: user.nombre || '',
+        apellido: user.apellidos || '',
+        correo: user.correo || '',
+        calle: user.direccion || '',
+        comuna: user.comuna || 'Cerrillos',
+        region: user.region || 'Región Metropolitana de Santiago'
+      }));
+    }
+  }, [user]); // Se ejecuta cada vez que 'user' cambia
+  // --- FIN LÓGICA AUTOCOMPLETADO ---
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -29,6 +54,8 @@ const CompraPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Aquí se podría limpiar el carrito
+    // localStorage.removeItem('cart');
     navigate('/pago-correcto');
   };
 
@@ -39,7 +66,7 @@ const CompraPage = () => {
 
         {/* Carrito */}
         <div className="card shadow-sm p-4 mb-4">
-          <h5 className="fw-semibold mb-3">Completa la siguiente información</h5>
+          <h5 className="fw-semibold mb-3">Tus Productos</h5>
           {cart.length > 0 ? (
             <>
               <div className="table-responsive">
@@ -53,12 +80,13 @@ const CompraPage = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {/* Usamos 'title' como key porque así está en el cart */}
                     {cart.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.nombre}</td>
-                        <td>${item.precio.toLocaleString()}</td>
+                      <tr key={item.title}>
+                        <td>{item.title}</td>
+                        <td>${item.price.toLocaleString()}</td>
                         <td>{item.cantidad}</td>
-                        <td>${(item.precio * item.cantidad).toLocaleString()}</td>
+                        <td>${(item.price * item.cantidad).toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -85,25 +113,17 @@ const CompraPage = () => {
               <div className="col-md-6">
                 <label className="form-label">Nombre*</label>
                 <input
-                  type="text"
-                  name="nombre"
-                  className="form-control"
-                  placeholder="Ej: Juan"
-                  value={form.nombre}
-                  onChange={handleChange}
-                  required
+                  type="text" name="nombre" className="form-control"
+                  placeholder="Ej: Juan" value={form.nombre}
+                  onChange={handleChange} required
                 />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Apellidos*</label>
                 <input
-                  type="text"
-                  name="apellido"
-                  className="form-control"
-                  placeholder="Ej: Pérez Soto"
-                  value={form.apellido}
-                  onChange={handleChange}
-                  required
+                  type="text" name="apellido" className="form-control"
+                  placeholder="Ej: Pérez Soto" value={form.apellido}
+                  onChange={handleChange} required
                 />
               </div>
             </div>
@@ -111,13 +131,9 @@ const CompraPage = () => {
             <div className="mb-3">
               <label className="form-label">Correo*</label>
               <input
-                type="email"
-                name="correo"
-                className="form-control"
-                placeholder="Ej: juanperez@gmail.com"
-                value={form.correo}
-                onChange={handleChange}
-                required
+                type="email" name="correo" className="form-control"
+                placeholder="Ej: juanperez@gmail.com" value={form.correo}
+                onChange={handleChange} required
               />
             </div>
 
@@ -127,23 +143,16 @@ const CompraPage = () => {
               <div className="col-md-8">
                 <label className="form-label">Calle*</label>
                 <input
-                  type="text"
-                  name="calle"
-                  className="form-control"
-                  placeholder="Ej: Calle Falsa 123"
-                  value={form.calle}
-                  onChange={handleChange}
-                  required
+                  type="text" name="calle" className="form-control"
+                  placeholder="Ej: Calle Falsa 123" value={form.calle}
+                  onChange={handleChange} required
                 />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Departamento (opcional)</label>
                 <input
-                  type="text"
-                  name="departamento"
-                  className="form-control"
-                  placeholder="Ej: 603"
-                  value={form.departamento}
+                  type="text" name="departamento" className="form-control"
+                  placeholder="Ej: 603" value={form.departamento}
                   onChange={handleChange}
                 />
               </div>
@@ -152,29 +161,17 @@ const CompraPage = () => {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label className="form-label">Región*</label>
-                <select
-                  name="region"
-                  className="form-select"
-                  value={form.region}
-                  onChange={handleChange}
-                >
-                  <option>Región Metropolitana de Santiago</option>
-                  <option>Valparaíso</option>
-                  <option>Biobío</option>
-                  <option>Los Lagos</option>
-                  <option>Coquimbo</option>
-                </select>
+                <input
+                  type="text" name="region" className="form-control"
+                  value={form.region} onChange={handleChange} required
+                />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Comuna*</label>
                 <input
-                  type="text"
-                  name="comuna"
-                  className="form-control"
-                  placeholder="Ej: Cerrillos"
-                  value={form.comuna}
-                  onChange={handleChange}
-                  required
+                  type="text" name="comuna" className="form-control"
+                  placeholder="Ej: Cerrillos" value={form.comuna}
+                  onChange={handleChange} required
                 />
               </div>
             </div>
@@ -182,12 +179,9 @@ const CompraPage = () => {
             <div className="mb-4">
               <label className="form-label">Indicaciones para la entrega (opcional)</label>
               <textarea
-                name="indicaciones"
-                className="form-control"
-                rows="2"
+                name="indicaciones" className="form-control" rows="2"
                 placeholder="Ej: Entre calles, color del edificio, no tiene timbre."
-                value={form.indicaciones}
-                onChange={handleChange}
+                value={form.indicaciones} onChange={handleChange}
               ></textarea>
             </div>
 

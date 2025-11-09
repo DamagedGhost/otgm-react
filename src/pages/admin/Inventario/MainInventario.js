@@ -1,8 +1,15 @@
 import React from 'react';
 import AdminTemplate from "../../../templates/AdminTemplate";
 import Button from '../../../components/atoms/Button';
+import useProductsViewModel from '../../../viewmodels/useProductsViewModel'; // 1. Importar
 
 const MainInventario = () => {
+    const { products } = useProductsViewModel(); // 2. Obtener productos
+
+    // 3. Encontrar el producto más reciente (el ID es un timestamp)
+    const ultimoProducto = products.reduce((max, p) => (p.id > max.id ? p : max), products[0]);
+    const ultimaActualizacion = new Date(ultimoProducto?.id || Date.now()).toLocaleDateString('es-CL');
+
     return (
         <AdminTemplate>
           <main className="flex-grow-1" id="main-content" role="main">
@@ -33,8 +40,9 @@ const MainInventario = () => {
                   <div className="col-sm-6 col-md-6">
                     <div className="card shadow-sm profile-card-animation-1">
                       <div className="card-body">
-                        <small className="text-muted">Total productos</small>
-                        <div className="h5 mt-2">- llenar con JS -</div>
+                        <small className="text-muted">Total productos (SKU)</small>
+                        {/* 4. Dato real */}
+                        <div className="h5 mt-2">{products.length} Productos</div>
                       </div>
                     </div>
                   </div>
@@ -42,7 +50,8 @@ const MainInventario = () => {
                     <div className="card shadow-sm profile-card-animation-4">
                       <div className="card-body">
                         <small className="text-muted">Última actualización</small>
-                        <div className="h5 mt-2">- llenar con JS -</div>
+                        {/* 5. Dato real */}
+                        <div className="h5 mt-2">{ultimaActualizacion}</div>
                       </div>
                     </div>
                   </div>
