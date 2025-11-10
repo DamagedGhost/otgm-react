@@ -23,7 +23,7 @@ describe('Componente Button (Prueba de Props)', () => {
     expect(buttonElement).toBeTruthy();
   });
 
-  // Prueba 2: Probar la prop "href" (Renderizado condicional)
+  //Probar la prop "href" (Renderizado condicional)
   it('debería renderizar un enlace <a> (rol "link") si se pasa la prop "href"', () => {
     // Renderizamos el botón pasándole una prop "href"
     render(

@@ -11,7 +11,7 @@ import RegLinks from '../../../src/components/molecules/RegLinks';
 
 describe('Componente RegLinks (Renderizado Condicional)', () => {
 
-  // PRUEBA 1: El caso "sin usuario" (log-out)
+  //El caso "sin usuario" (log-out)
   it('debería mostrar "Iniciar sesión" y "Registrar" si el usuario es null', () => {
     
     // Aquí está el truco:
@@ -33,7 +33,7 @@ describe('Componente RegLinks (Renderizado Condicional)', () => {
     expect(screen.queryByText(/Bienvenido/i)).toBeNull();
   });
 
-  // PRUEBA 2: El caso "con usuario" (log-in)
+  //El caso "con usuario" (log-in)
   it('debería mostrar "Bienvenido" y "Cerrar Sesión" si hay un usuario', () => {
     
     // Creamos un usuario falso

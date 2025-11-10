@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Button from '../atoms/Button';
 
 const Counter = () => {
-  // 1. El ESTADO interno
+  //ESTADO interno
   const [count, setCount] = useState(0);
 
-  // 2. La función que actualiza el ESTADO
+  //función que actualiza el ESTADO
   const increment = () => {
     setCount(count + 1);
   };

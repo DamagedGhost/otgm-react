@@ -6,7 +6,7 @@ import { AuthProvider } from "../src/context/AuthContext";
 import App from "../src/App";
 
 describe("Componente App", () => {
-  it('debería renderizar correctamente y mostrar "Learn React"', () => {
+  it('debería renderizar correctamente y mostrar "Prueba render"', () => {
     // Prueba de Renderizado 
     render(
       <MemoryRouter>
@@ -16,6 +16,6 @@ describe("Componente App", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/learn react/i)).toBeTruthy();
+    expect(screen.getByText(/Prueba render/i)).toBeTruthy();
   });
 });

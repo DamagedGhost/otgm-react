@@ -101,7 +101,7 @@ function App() {
     </Routes>
 
     <div>
-      Learn React
+      Prueba render
     </div>
     </>
   );

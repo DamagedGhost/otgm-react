@@ -7,7 +7,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     
-    // 1. Al cargar, intenta leer el usuario desde localStorage
+    // Al cargar, intenta leer el usuario desde localStorage
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem(AUTH_KEY);
         try {
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     const { findUserByEmailAndPassword } = useUserViewModel();
     const navigate = useNavigate();
 
-    // 2. CUALQUIER cambio en 'user' se guarda en localStorage
+    // CUALQUIER cambio en 'user' se guarda en localStorage
     useEffect(() => {
         if (user) {
             // Si el usuario existe (login), lo guardamos
