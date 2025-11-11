@@ -65,11 +65,11 @@ El proyecto sigue patrones modernos de desarrollo de frontend:
 
 1.  Clonar el repositorio:
     ```bash
-    git clone https://[URL-DE-TU-REPO].git
+    git clone https://github.com/DamagedGhost/otgm-react
     ```
 2.  Navegar a la carpeta del proyecto:
     ```bash
-    cd [NOMBRE-DE-TU-CARPETA]
+    cd otgm-react
     ```
 3.  Instalar las dependencias (incluyendo las de los gráficos):
     ```bash
