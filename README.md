@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# On The Go Music (React E-Commerce)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Una plataforma de e-commerce responsive para la tienda de instrumentos musicales "On The Go Music", construida con React, Bootstrap y una arquitectura de persistencia simulada en el frontend.
 
-## Available Scripts
+## 1. Contexto del Proyecto
 
-In the project directory, you can run:
+Este proyecto fue desarrollado como parte de la asignatura Desarrollo FullStack II (DSY1104). Representa una **migración estratégica** desde un sitio HTML/CSS/JS estático a una **Single Page Application (SPA)** moderna, interactiva y escalable.
 
-### `npm start`
+El objetivo principal es establecer una base sólida para el e-commerce. Para cumplir con los requisitos de la evaluación, se implementó un **frontend completamente funcional** que maneja su propia lógica de negocio y persistencia de datos de forma simulada (`localStorage`), preparando el terreno para una futura integración con un backend dedicado.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 2. Características Principales
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+El proyecto se divide en dos grandes áreas: la tienda pública para clientes y un panel de administración completo.
 
-### `npm test`
+### Tienda (Cliente)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **🛒 Carrito de Compras:** Sistema completo para agregar productos, ver el resumen y persistir la compra en `localStorage`.
+* **👤 Autenticación de Clientes:** Flujo completo de Registro, Login y Sesión Persistente (`localStorage`).
+* **💳 Flujo de Compra (Checkout):** Formulario de compra que se **autocompleta automáticamente** con los datos del usuario si este ha iniciado sesión.
+* **👁️ Vistas de Catálogo:** Navegación completa por Productos, Detalle de Producto y página de Categorías.
+* **📱 Diseño 100% Responsivo:** Tanto la tienda pública (con menú *collapse*) como el panel de administración (con menú *offcanvas*) se adaptan a dispositivos móviles usando Bootstrap 5.
+* **📄 Páginas Estáticas:** Secciones informativas como "Nosotros", "Blogs" y un formulario de "Contacto" con validación de estado.
 
-### `npm run build`
+### Panel de Administración
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* **🔐 Rutas Protegidas:** Todo el panel `/Admin` es inaccesible a menos que se inicie sesión como "admin".
+* **📊 Dashboard Interactivo:** Página principal de admin con tarjetas de resumen (Total de Usuarios, Productos, Órdenes) y **gráficos dinámicos** que leen datos en vivo de los ViewModels.
+* **📦 CRUD de Productos:** Gestión completa (Crear, Leer, Actualizar, Eliminar) para productos, con persistencia en `localStorage`.
+* **👥 CRUD de Usuarios:** Gestión completa (Crear, Leer, Actualizar, Eliminar) para usuarios (clientes y admins).
+* **🏷️ CRUD de Categorías:** Gestión completa (Crear, Leer, Eliminar) para las categorías de productos.
+* **📈 Reportes y Listados:** Vistas funcionales para `Productos Críticos`, `Reporte de Inventario`, `Reporte General`, `Mostrar Boletas` e `Historial de Compras` por usuario.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ 3. Stack Tecnológico y Arquitectura
 
-### `npm run eject`
+La arquitectura del proyecto es uno de sus pilares. Se diseñó para ser mantenible, escalable y fácil de testear.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Stack Principal
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* **React (v18+)**
+* **React Router (v6)** para la navegación (SPA).
+* **Bootstrap 5 (CSS + JS)** para un diseño responsivo (`navbar-toggler`, `offcanvas`, etc.).
+* **@mui/x-charts** para la visualización de datos en el Dashboard.
+* **Jest & React Testing Library** para Pruebas Unitarias.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Arquitectura de Software
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+El proyecto sigue patrones modernos de desarrollo de frontend:
 
-## Learn More
+1.  **Patrón ViewModel (MVVM simulado):** Se centralizó toda la lógica de negocio (el estado y las funciones que lo modifican) fuera de las vistas, en **React Hooks** personalizados que actúan como *ViewModels*.
+    * `useProductsViewModel.js`: Maneja el estado y CRUD de todos los productos.
+    * `useUserViewModel.js`: Maneja el estado y CRUD de todos los usuarios.
+    * `useCategoriaViewModel.js`: Maneja el estado y CRUD de las categorías.
+2.  **Persistencia Simulada (Frontend-as-Backend):** Cumpliendo con los requisitos, no se utilizó un backend. En su lugar, los *ViewModels* utilizan el **`localStorage` del navegador** como una base de datos simulada. Esto permite una persistencia de datos completa (el CRUD se guarda al recargar la página).
+3.  **Gestión de Estado Global (Context API):** El estado de la sesión de autenticación (quién está logueado) se maneja globalmente a través de `AuthContext.js`, permitiendo que cualquier componente sepa si el usuario está logueado y quién es.
+4.  **Atomic Design:** La estructura de componentes se basa en Atomic Design para maximizar la reutilización.
+    * `atoms`: Componentes puros como `Button.js` e `Input.js`.
+    * `molecules`: Combinaciones de átomos como `ProductCard.js` y `RegLinks.js`.
+    * `organisms`: Secciones complejas como `NavBar.js` y `ProductGrid.js`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🏁 4. Instalación y Ejecución
 
-### Code Splitting
+1.  Clonar el repositorio:
+    ```bash
+    git clone https://[URL-DE-TU-REPO].git
+    ```
+2.  Navegar a la carpeta del proyecto:
+    ```bash
+    cd [NOMBRE-DE-TU-CARPETA]
+    ```
+3.  Instalar las dependencias (incluyendo las de los gráficos):
+    ```bash
+    npm install
+    npm install @mui/material @emotion/react @emotion/styled @mui/x-charts
+    ```
+4.  Ejecutar el proyecto:
+    ```bash
+    npm start
+    ```
+    La aplicación se abrirá en `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Credenciales de Prueba
 
-### Analyzing the Bundle Size
+* **Administrador:**
+    * **Usuario:** `admin@mail.com`
+    * **Contraseña:** `123`
+* **Cliente (Ejemplo):**
+    * **Usuario:** `cliente@mail.com`
+    * **Contraseña:** `123`
+* O puedes registrar un nuevo cliente en la ruta `/registro`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🧪 5. Pruebas Unitarias
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+El proyecto incluye una suite de pruebas (ubicada en la carpeta `/test`) que valida el correcto funcionamiento de los componentes, como lo exige la pauta de evaluación.
 
-### Advanced Configuration
+Las pruebas cubren:
+* **Renderizado de Componentes:** (e.g., `App.spec.js`)
+* **Manejo de `props`:** Se prueba que un componente renderice el texto correcto pasado por `props` (e.g., `Button.spec.js`).
+* **Renderizado Condicional:** Se prueba que un componente muestre una UI (ej. "Bienvenido") si el usuario está logueado, y otra UI (ej. "Iniciar Sesión") si no lo está (e.g., `RegLinks.spec.js`).
+* **Simulación de Eventos (Estado):** Se prueba que el estado de un formulario se actualiza correctamente cuando el usuario simula escribir en un `input` (e.g., `ContactoForm.spec.js`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Para ejecutar las pruebas:
+```bash
+npm test
