@@ -106,4 +106,4 @@ Las pruebas cubren:
 
 Para ejecutar las pruebas:
 ```bash
-npm test
+npx test
