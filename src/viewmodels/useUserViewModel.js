@@ -1,83 +1,102 @@
-import { useState } from 'react';
-// import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
-// Tu lista original de usuarios
-const mockUsers = [
-    { id: 1, rut: '11.111.111-1', nombre: 'Juan', apellidos: 'Pérez', correo: 'admin@mail.com', password: '123', rol: 'admin', region: 'Metropolitana', comuna: 'Santiago', direccion: 'Calle Falsa 123' },
-    { id: 2, rut: '12.222.222-2', nombre: 'Ana', apellidos: 'Gómez', correo: 'cliente@mail.com', password: '123', rol: 'client', region: 'Valparaíso', comuna: 'Viña del Mar', direccion: 'Av. Siempre Viva 456' },
-    // ... (agregué solo 2 para el ejemplo, pero tu lista completa está bien)
-];
-
-const DB_NAME = 'users';
-
-// Carga inicial de usuarios
-const loadUsers = () => {
-  try {
-    const data = localStorage.getItem(DB_NAME);
-    if (data) {
-      return JSON.parse(data);
-    } else {
-      // Si no hay nada, cargamos los datos iniciales y los guardamos
-      localStorage.setItem(DB_NAME, JSON.stringify(mockUsers));
-      return mockUsers;
-    }
-  } catch (error) {
-    console.error("Error al cargar usuarios", error);
-    return mockUsers;
-  }
-};
+// ⚠️ CAMBIA ESTO POR LA IP DE TU INSTANCIA BACKEND
+const API_URL = 'http://34.193.81.109:3000'; 
 
 const useUserViewModel = () => {
-  const [users, setUsers] = useState(() => loadUsers());
+  const [users, setUsers] = useState([]);
 
-  // Función interna para guardar
-  const _saveAndSet = (newUsers) => {
-    localStorage.setItem(DB_NAME, JSON.stringify(newUsers));
-    setUsers(newUsers);
+  // --- LOGIN (Usado por AuthContext) ---
+  const login = async (correo, password) => {
+    try {
+        // Enviamos correo y password al endpoint /login
+        const response = await axios.post(`${API_URL}/login`, { correo, password });
+        // Si es exitoso, la API devuelve los datos del usuario
+        return response.data; 
+    } catch (error) {
+        console.error("Error de login:", error);
+        return null;
+    }
   };
 
-  // --- FUNCIÓN CREATE ---
-  const addUser = (userData) => {
-    const newUser = {
-      ...userData,
-      id: Date.now(),
-      rol: userData.rol || 'client' // Rol por defecto
-    };
-    const updatedUsers = [...users, newUser];
-    _saveAndSet(updatedUsers);
+  // --- CREAR USUARIO (Usado en Registro y Admin) ---
+  const addUser = async (userData) => {
+    try {
+        // Usamos el endpoint /usuarios. 
+        // Si viene del Registro público, no lleva rol (el modelo asigna 'cliente' por defecto).
+        // Si viene del Admin, lleva rol y se respeta.
+        await axios.post(`${API_URL}/usuarios`, userData);
+        
+        // Si estamos en la vista de admin (y ya cargamos usuarios), recargamos la lista
+        if (users.length > 0) {
+            loadUsers();
+        }
+        return true;
+    } catch (error) {
+        console.error("Error al crear usuario:", error);
+        throw error; 
+    }
   };
 
-  // --- FUNCIÓN READ (Single) ---
-  const getUserById = (id) => {
-    return users.find(u => u.id === id);
+  // --- LEER USUARIOS (Para la tabla de Admin) ---
+  const loadUsers = useCallback(async () => {
+      try {
+          const res = await axios.get(`${API_URL}/usuarios`);
+          // Mapeamos _id (de Mongo) a id (que usa tu tabla React)
+          const adaptedUsers = res.data.map(u => ({ 
+              ...u, 
+              id: u._id 
+          }));
+          setUsers(adaptedUsers);
+      } catch (e) { 
+          console.error("Error cargando usuarios", e); 
+      }
+  }, []);
+
+  // Cargar usuarios automáticamente solo si se llama al hook (útil para la página de lista)
+  // Nota: Si prefieres cargar solo bajo demanda, puedes quitar este useEffect
+  useEffect(() => {
+      loadUsers();
+  }, [loadUsers]);
+
+  // --- ACTUALIZAR USUARIO ---
+  const updateUser = async (id, data) => {
+      try {
+          await axios.put(`${API_URL}/usuarios/${id}`, data);
+          loadUsers(); // Recargar lista
+      } catch (error) {
+          console.error("Error actualizando usuario", error);
+      }
   };
 
-  // --- FUNCIÓN UPDATE ---
-  const updateUser = (id, updatedData) => {
-    const updatedUsers = users.map(u => 
-      u.id === id ? { ...u, ...updatedData } : u
-    );
-    _saveAndSet(updatedUsers);
+  // --- ELIMINAR USUARIO ---
+  const deleteUser = async (id) => {
+      try {
+          await axios.delete(`${API_URL}/usuarios/${id}`);
+          loadUsers();
+      } catch (error) {
+          console.error("Error eliminando usuario", error);
+      }
   };
 
-  // --- FUNCIÓN DELETE ---
-  const deleteUser = (id) => {
-    const updatedUsers = users.filter(u => u.id !== id);
-    _saveAndSet(updatedUsers);
-  };
+  // Helper para obtener datos de la lista local (para EditarUsuario.js)
+  const getUserById = (id) => users.find(u => u.id === id);
 
-  // --- FUNCIÓN DE LOGIN ---
-  const findUserByEmailAndPassword = (correo, password) => {
-    return users.find(u => u.correo === correo && u.password === password);
+  // Mantenemos esta función vacía para compatibilidad si algún archivo viejo la llama
+  const findUserByEmailAndPassword = () => {
+      console.warn("Usar login() en lugar de findUserByEmailAndPassword");
   };
 
   return { 
     users, 
+    login, 
     addUser, 
-    getUserById, 
-    updateUser, 
     deleteUser,
-    findUserByEmailAndPassword // <--- IMPORTANTE PARA LOGIN
+    updateUser,
+    getUserById,
+    findUserByEmailAndPassword,
+    loadUsers // Exportamos también loadUsers por si quieres recargar manualmente
   };
 };
 
