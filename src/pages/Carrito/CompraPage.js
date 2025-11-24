@@ -1,37 +1,31 @@
-import React, { useState, useEffect } from 'react'; // 1. Importar useEffect
+import React, { useState, useEffect } from 'react'; 
 import MainTemplate from '../../templates/MainTemplate';
 import Button from '../../components/atoms/Button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // 2. Importar useAuth
+import { useAuth } from '../../context/AuthContext'; 
+import useBoletaViewModel from '../../viewmodels/useBoletaViewModel'; 
 
 const CompraPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth(); // 3. Obtener el usuario logueado
+  const { user } = useAuth(); 
+  const { addBoleta } = useBoletaViewModel(); 
 
-  // --- ARREGLO DEL CARRITO ---
-  // Cargar carrito desde localStorage
+  // --- CARRITO ---
   const [cart, setCart] = useState([]);
   useEffect(() => {
     const data = localStorage.getItem('cart');
     setCart(data ? JSON.parse(data) : []);
   }, []);
-  // --- FIN ARREGLO CARRITO ---
 
   const total = cart.reduce((acc, item) => acc + item.price * item.cantidad, 0);
 
+  // --- FORMULARIO ---
   const [form, setForm] = useState({
-    nombre: '',
-    apellido: '',
-    correo: '',
-    calle: '',
-    departamento: '',
-    region: 'Región Metropolitana de Santiago',
-    comuna: 'Cerrillos',
-    indicaciones: '',
+    nombre: '', apellido: '', correo: '', calle: '',
+    departamento: '', region: 'Región Metropolitana de Santiago', comuna: 'Cerrillos', indicaciones: '',
   });
 
-  // --- LÓGICA DE AUTOCOMPLETADO ---
-  // 4. Usar useEffect para rellenar el formulario si el usuario cambia
+  // Autocompletar si hay usuario
   useEffect(() => {
     if (user) {
       setForm(prevForm => ({
@@ -44,19 +38,53 @@ const CompraPage = () => {
         region: user.region || 'Región Metropolitana de Santiago'
       }));
     }
-  }, [user]); // Se ejecuta cada vez que 'user' cambia
-  // --- FIN LÓGICA AUTOCOMPLETADO ---
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  // --- MANEJO DEL SUBMIT ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí se podría limpiar el carrito
-    // localStorage.removeItem('cart');
-    navigate('/pago-correcto');
+
+    // CORRECCIÓN: Buscamos id O _id para ser compatibles con Mongo directo
+    const userId = user ? (user.id || user._id) : null;
+
+    // Validación robusta
+    if (!userId) {
+        alert("Debes iniciar sesión para completar la compra.");
+        navigate('/login');
+        return;
+    }
+
+    if (cart.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+    }
+
+    // Construimos el objeto Boleta usando el userId resuelto
+    const nuevaBoleta = {
+        total: total,
+        usuario: userId, 
+        estado: 'Emitida',
+        items: cart.map(prod => ({
+            productoId: prod.id, // Aquí asumimos que los productos ya tienen 'id' mapeado en el ViewModel
+            titulo: prod.title,
+            precio: prod.price,
+            cantidad: prod.cantidad
+        }))
+    };
+
+    try {
+        await addBoleta(nuevaBoleta);
+        localStorage.removeItem('cart'); 
+        navigate('/pago-correcto');
+    } catch (error) {
+        console.error(error);
+        navigate('/pago-error');
+    }
   };
 
   return (
@@ -80,7 +108,6 @@ const CompraPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Usamos 'title' como key porque así está en el cart */}
                     {cart.map((item) => (
                       <tr key={item.title}>
                         <td>{item.title}</td>
@@ -112,77 +139,45 @@ const CompraPage = () => {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label className="form-label">Nombre*</label>
-                <input
-                  type="text" name="nombre" className="form-control"
-                  placeholder="Ej: Juan" value={form.nombre}
-                  onChange={handleChange} required
-                />
+                <input type="text" name="nombre" className="form-control" placeholder="Ej: Juan" value={form.nombre} onChange={handleChange} required />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Apellidos*</label>
-                <input
-                  type="text" name="apellido" className="form-control"
-                  placeholder="Ej: Pérez Soto" value={form.apellido}
-                  onChange={handleChange} required
-                />
+                <input type="text" name="apellido" className="form-control" placeholder="Ej: Pérez Soto" value={form.apellido} onChange={handleChange} required />
               </div>
             </div>
 
             <div className="mb-3">
               <label className="form-label">Correo*</label>
-              <input
-                type="email" name="correo" className="form-control"
-                placeholder="Ej: juanperez@gmail.com" value={form.correo}
-                onChange={handleChange} required
-              />
+              <input type="email" name="correo" className="form-control" placeholder="Ej: juanperez@gmail.com" value={form.correo} onChange={handleChange} required />
             </div>
 
-            {/* Dirección */}
-            <h5 className="fw-semibold mb-3 mt-4">Dirección de entrega de los productos</h5>
+            <h5 className="fw-semibold mb-3 mt-4">Dirección de entrega</h5>
             <div className="row mb-3">
               <div className="col-md-8">
                 <label className="form-label">Calle*</label>
-                <input
-                  type="text" name="calle" className="form-control"
-                  placeholder="Ej: Calle Falsa 123" value={form.calle}
-                  onChange={handleChange} required
-                />
+                <input type="text" name="calle" className="form-control" placeholder="Ej: Calle Falsa 123" value={form.calle} onChange={handleChange} required />
               </div>
               <div className="col-md-4">
-                <label className="form-label">Departamento (opcional)</label>
-                <input
-                  type="text" name="departamento" className="form-control"
-                  placeholder="Ej: 603" value={form.departamento}
-                  onChange={handleChange}
-                />
+                <label className="form-label">Departamento</label>
+                <input type="text" name="departamento" className="form-control" placeholder="Ej: 603" value={form.departamento} onChange={handleChange} />
               </div>
             </div>
 
             <div className="row mb-3">
               <div className="col-md-6">
                 <label className="form-label">Región*</label>
-                <input
-                  type="text" name="region" className="form-control"
-                  value={form.region} onChange={handleChange} required
-                />
+                <input type="text" name="region" className="form-control" value={form.region} onChange={handleChange} required />
               </div>
               <div className="col-md-6">
                 <label className="form-label">Comuna*</label>
-                <input
-                  type="text" name="comuna" className="form-control"
-                  placeholder="Ej: Cerrillos" value={form.comuna}
-                  onChange={handleChange} required
-                />
+                <input type="text" name="comuna" className="form-control" placeholder="Ej: Cerrillos" value={form.comuna} onChange={handleChange} required />
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="form-label">Indicaciones para la entrega (opcional)</label>
-              <textarea
-                name="indicaciones" className="form-control" rows="2"
-                placeholder="Ej: Entre calles, color del edificio, no tiene timbre."
-                value={form.indicaciones} onChange={handleChange}
-              ></textarea>
+              <label className="form-label">Indicaciones (opcional)</label>
+              <textarea name="indicaciones" className="form-control" rows="2" value={form.indicaciones} onChange={handleChange}></textarea>
             </div>
 
             <div className="d-grid">

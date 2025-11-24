@@ -13,7 +13,7 @@ const AgregarUsuario = () => {
         apellidos: '',
         correo: '',
         password: '',
-        rol: 'client', // Valor por defecto
+        rol: 'cliente', // Valor por defecto
         region: '',
         comuna: '',
         direccion: ''
@@ -24,11 +24,17 @@ const AgregarUsuario = () => {
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => { // <--- función async para manejar errores mejor
         e.preventDefault();
-        addUser(formData);
-        alert('Usuario agregado exitosamente');
-        navigate('/Admin/Usuarios/ListarUsuarios');
+        try {
+            await addUser(formData);
+            alert('Usuario agregado exitosamente');
+            navigate('/Admin/Usuarios/ListarUsuarios');
+        } catch (error) {
+            // Esto te mostrará el mensaje exacto del backend (ej: "El correo ya existe")
+            const mensajeError = error.response?.data?.message || 'Error desconocido';
+            alert('Error al crear usuario: ' + mensajeError);
+        }
     };
 
     return (
@@ -70,14 +76,17 @@ const AgregarUsuario = () => {
                                 <label htmlFor="password">Contraseña *</label>
                                 <input type="password" id="password" value={formData.password} onChange={handleChange} required className="form-control" />
                             </div>
-                            {/* Tipo de Usuario */}
+                            
+                            {/* --- Tipo de Usuario --- */}
                             <div className="mb-3">
                                 <label htmlFor="rol">Tipo de Usuario: *</label>
                                 <select id="rol" value={formData.rol} onChange={handleChange} className="form-select" required>
-                                    <option value="client">Cliente</option>
+                                    <option value="cliente">Cliente</option> 
                                     <option value="admin">Administrador</option>
+                                    <option value="vendedor">Vendedor</option>
                                 </select>
                             </div>
+
                             {/* Región y Comuna (lado a lado) */}
                             <div className="mb-3 row g-3">
                                 <div className="col-md-6">
