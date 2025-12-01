@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // 1. Importamos useState
 import { useParams, Link } from 'react-router-dom';
 import MainTemplate from '../../templates/MainTemplate';
 import useProductsViewModel from '../../viewmodels/useProductsViewModel';
@@ -8,15 +8,17 @@ import '../../App.css';
 const DetallesProdPage = () => {
   const { title: titleParam } = useParams();
   const { products } = useProductsViewModel();
+  
+  // 2. Creamos el estado para la cantidad (inicia en 1 por defecto)
+  const [cantidad, setCantidad] = useState(1);
 
-  // Convierte el titulo en un slug limpio (sin tildes, espacios ni caracteres especiales)
   const slugify = (t = '') =>
     t
       .toString()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // quita tildes
+      .replace(/[\u0300-\u036f]/g, '') 
       .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/gi, '') // solo letras, numeros y guiones
+      .replace(/[^a-z0-9-]/gi, '') 
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '')
       .toLowerCase();
@@ -25,8 +27,7 @@ const DetallesProdPage = () => {
   const currentIndex = products.findIndex((p) => slugify(p.title) === titleSlug);
   const product = currentIndex !== -1 ? products[currentIndex] : undefined;
 
-  // Actualiza el titulo de la pestaña
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = product ? product.title : 'Producto no encontrado';
   }, [product]);
 
@@ -53,18 +54,23 @@ const DetallesProdPage = () => {
     if (existingProduct) {
       updatedCart = storedCart.map((item) =>
         item.title === product.title
-          ? { ...item, cantidad: item.cantidad + 1 }
+          // 3. CORRECCIÓN: Sumamos la cantidad seleccionada (estado), no un 1 fijo
+          ? { ...item, cantidad: item.cantidad + cantidad }
           : item
       );
     } else {
-      updatedCart = [...storedCart, { ...product, cantidad: 1 }];
+      // 4. CORRECCIÓN: Usamos la cantidad seleccionada para el nuevo item
+      updatedCart = [...storedCart, { ...product, cantidad: cantidad }];
     }
 
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    alert(product.title + ' agregado al carrito');
+    
+    // Disparamos evento para actualizar el contador del Navbar al instante (opcional pero recomendado)
+    window.dispatchEvent(new Event("storage"));
+
+    alert(`${product.title} agregado al carrito (${cantidad} unidades)`);
   };
 
-  // Productos relacionados (excluye el actual y muestra hasta 4)
   const relacionados = products.filter((_, i) => i !== currentIndex).slice(0, 4);
 
   return (
@@ -95,18 +101,12 @@ const DetallesProdPage = () => {
                 style={{ width: '500px', height: '500px', objectFit: 'cover' }}
               />
               <div className="d-flex gap-2 justify-content-center">
-                <img
-                  src={product.miniatura1}
-                  alt="Miniatura 1"
-                  className="img-thumbnail"
-                  width="100"
-                />
-                <img
-                  src={product.miniatura2}
-                  alt="Miniatura 2"
-                  className="img-thumbnail"
-                  width="100"
-                />
+                {product.miniatura1 && (
+                  <img src={product.miniatura1} alt="Miniatura 1" className="img-thumbnail" width="100" />
+                )}
+                {product.miniatura2 && (
+                  <img src={product.miniatura2} alt="Miniatura 2" className="img-thumbnail" width="100" />
+                )}
               </div>
             </div>
 
@@ -121,10 +121,18 @@ const DetallesProdPage = () => {
                   <label htmlFor="cantidad" className="form-label">
                     Cantidad
                   </label>
-                  <select id="cantidad" className="form-select w-25">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  {/* 5. Vinculamos el select al estado 'cantidad' */}
+                  <select 
+                    id="cantidad" 
+                    className="form-select w-25"
+                    value={cantidad} 
+                    onChange={(e) => setCantidad(parseInt(e.target.value))}
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                   </select>
                 </div>
 

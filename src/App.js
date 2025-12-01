@@ -100,7 +100,7 @@ function App() {
       </Route>
     </Routes>
 
-    <div>
+    <div className="d-none">
       Prueba render
     </div>
     </>

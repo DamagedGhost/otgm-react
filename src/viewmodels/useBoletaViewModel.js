@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// ⚠️ CAMBIA ESTO POR LA IP DE TU INSTANCIA BACKEND
+// ⚠️ CAMBIA ESTO POR LA IP DE TU INSTANCIA BACKEND SI ES NECESARIO
 const API_URL = 'http://34.193.81.109:3000/boletas';
 
 const useBoletaViewModel = () => {
   const [boletas, setBoletas] = useState([]);
+  const [loading, setLoading] = useState(false); // Estado de carga
+  const [error, setError] = useState(null);      // Estado de error
 
   // --- CARGAR BOLETAS (READ) ---
   const cargarBoletas = async () => {
+      setLoading(true);
+      setError(null);
       try {
           const res = await axios.get(API_URL);
           
@@ -22,12 +26,17 @@ const useBoletaViewModel = () => {
               total: b.total,
               estado: b.estado,
               userId: b.usuario?._id || 'N/A',
-              cliente: b.usuario ? `${b.usuario.nombre} ${b.usuario.apellidos}` : 'Usuario Eliminado'
+              cliente: b.usuario ? `${b.usuario.nombre} ${b.usuario.apellidos}` : 'Usuario Eliminado',
+              // IMPORTANTE: Mapeamos los items para poder ver el detalle
+              items: b.items || [] 
           }));
           
           setBoletas(boletasAdaptadas);
-      } catch (error) {
-          console.error("Error cargando boletas", error);
+      } catch (err) {
+          console.error("Error cargando boletas", err);
+          setError(err);
+      } finally {
+          setLoading(false);
       }
   };
 
@@ -35,11 +44,11 @@ const useBoletaViewModel = () => {
     cargarBoletas();
   }, []);
 
-  // --- NUEVA FUNCIÓN: CREAR BOLETA (CREATE) ---
+  // --- CREAR BOLETA (CREATE) ---
   const addBoleta = async (compraData) => {
       try {
           await axios.post(API_URL, compraData);
-          await cargarBoletas(); // Recargamos la lista localmente por si acaso
+          await cargarBoletas(); 
           return true;
       } catch (error) {
           console.error("Error al crear la boleta:", error);
@@ -47,15 +56,16 @@ const useBoletaViewModel = () => {
       }
   };
 
-  // Filtrar boletas localmente
   const getBoletasByUserId = (userId) => {
     return boletas.filter(b => b.userId === userId);
   };
 
   return { 
       boletas, 
+      loading, // Exportamos loading
+      error,   // Exportamos error
       getBoletasByUserId,
-      addBoleta // <--- Exportamos la nueva función
+      addBoleta 
   };
 };
 
