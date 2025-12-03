@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'; // 1. Importar useCallback
 import axios from 'axios';
 
-const API_URL = 'http://34.193.81.109:3000/boletas';
+const API_URL = 'http://34.193.81.109:3000/api/v1/boletas';
 
 const useBoletaViewModel = () => {
   const [boletas, setBoletas] = useState([]);

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://34.193.81.109:3000/productos';
+const API_URL = 'http://34.193.81.109:3000/api/v1/productos';
 
 const useProductsViewModel = () => {
   const [products, setProducts] = useState([]);

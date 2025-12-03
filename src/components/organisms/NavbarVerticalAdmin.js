@@ -78,10 +78,6 @@ const NavbarVerticalAdmin = () => {
                             {/* Visible SOLO para Vendedor / Seller */}
                             {isSeller && (
                                 <li className="nav-item">
-                                    <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Clientes">
-                                        <i className="bi bi-person-standing"></i>
-                                        Clientes
-                                    </Link>
                                 </li>
                             )}
                         </ul>

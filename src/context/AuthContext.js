@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AUTH_KEY = 'authUser';
 const TOKEN_KEY = 'authToken';
-const API_URL = 'http://34.193.81.109:3000'; // Tu IP o localhost
+const API_URL = 'http://34.193.81.109:3000/api/v1'; // Tu IP o localhost
 
 export const AuthContext = createContext();
 
