@@ -45,64 +45,62 @@ import './App.css';
 function App() {
   return (
     <>
-    
-    <Routes>
-      {/* --- RUTAS PÚBLICAS (TODAS TUS RUTAS ORIGINALES) --- */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/registro" element={<RegistroPage />} />
-      <Route path="/productos" element={<ProductosPage />} />
-      <Route path="/categoria" element={<CategoriasPage />} />
-      <Route path="/productos/:title" element={<DetallesProdPage />} />
-      <Route path="/nosotros" element={<NostrosPage />} />
-      <Route path="/blogs" element={<BlogsPage />} />
-      <Route path="/blogs/blog1" element={<Blog1Page />} />
-      <Route path="/blogs/blog2" element={<Blog2Page />} />
-      <Route path="/contacto" element={<ContactoPage />} />
-      <Route path="/carrito" element={<CarritoPage />} />
-      <Route path="/compra" element={<CompraPage />} />
-      <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
-      <Route path="/pago-error" element={<PagoErrorPage />} />
+      <Routes>
+        {/* ---------- ZONA PÚBLICA (Cliente) ---------- */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/registro" element={<RegistroPage />} />
+        <Route path="/productos" element={<ProductosPage />} />
+        <Route path="/categoria" element={<CategoriasPage />} />
+        <Route path="/productos/:title" element={<DetallesProdPage />} />
+        <Route path="/nosotros" element={<NostrosPage />} />
+        <Route path="/blogs" element={<BlogsPage />} />
+        <Route path="/blogs/blog1" element={<Blog1Page />} />
+        <Route path="/blogs/blog2" element={<Blog2Page />} />
+        <Route path="/contacto" element={<ContactoPage />} />
+        <Route path="/carrito" element={<CarritoPage />} />
+        <Route path="/compra" element={<CompraPage />} />
+        <Route path="/pago-correcto" element={<PagoCorrectoPage />} />
+        <Route path="/pago-error" element={<PagoErrorPage />} />
 
-      {/* --- RUTAS DE ADMIN PROTEGIDAS --- */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/Admin" element={<AdminHomePage />} />
-        
-        {/* ADMIN INVENTARIO ROUTES */}
-        <Route path="/Admin/Inventario" element={<MainInventario />} />
-        <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
-        <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
-        <Route path="/Admin/Inventario/EditarProducto/:id" element={<EditarProducto />} />
-        <Route path="/Admin/Inventario/ProductoReporte" element={<ProductoReporte />} />
-        <Route path="/Admin/Inventario/ProductosCriticos" element={<ProductosCriticos />} />
-        
-        {/* ADMIN USUARIOS ROUTES */}
-        <Route path="/Admin/Usuarios" element={<Usuario />} />
-        <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
-        <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
-        <Route path="/Admin/Usuarios/EditarUsuario/:id" element={<EditarUsuario />} />
-        <Route path="/Admin/Usuarios/HistorialCompra/:id" element={<HistorialCompra />} />
-        
-        {/* ADMIN BOLETA ROUTES */}
-        <Route path="/Admin/Boleta" element={<MainBoleta />} />
-        <Route path="/Admin/Boleta/MostrarBoletas" element={<MostrarBoletas />} />
-        
-        {/* ADMIN CATEGORIAS ROUTES */}
-        <Route path="/Admin/Categorias" element={<MainCategorias />} />
-        <Route path="/Admin/Categorias/ListarCategorias" element={<ListarCategorias />} />
-        <Route path="/Admin/Categorias/NuevaCategoria" element={<NuevaCategoria />} />
+        {/* ---------- ZONA MIXTA (admin + vendedor) ---------- */}
+        <Route element={<ProtectedRoute allowedRoles={['admin', 'vendedor']} />}>
+          <Route path="/Admin" element={<AdminHomePage />} />
 
-        {/* ADMIN REPORTE ROUTE */}
-        <Route path="/Admin/Reporte" element={<Reporte />} />
-        
-        {/* ADMIN PERFIL ROUTE */}
-        <Route path="/Admin/Perfil" element={<Perfil />} />
-      </Route>
-    </Routes>
+          {/* Inventario */}
+          <Route path="/Admin/Inventario" element={<MainInventario />} />
+          <Route path="/Admin/Inventario/NuevoProducto" element={<NuevoProducto />} />
+          <Route path="/Admin/Inventario/ListadoProductos" element={<ListadoProductos />} />
+          <Route path="/Admin/Inventario/EditarProducto/:id" element={<EditarProducto />} />
 
-    <div className="d-none">
-      Prueba render
-    </div>
+          {/* Boleta (accesible para admin y vendedor) */}
+          <Route path="/Admin/Boleta" element={<MainBoleta />} />
+          <Route path="/Admin/Boleta/MostrarBoletas" element={<MostrarBoletas />} />
+        </Route>
+
+        {/* ---------- ZONA EXCLUSIVA ADMIN (solo admin) ---------- */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          {/* Usuarios */}
+          <Route path="/Admin/Usuarios" element={<Usuario />} />
+          <Route path="/Admin/Usuarios/AgregarUsuario" element={<AgregarUsuario />} />
+          <Route path="/Admin/Usuarios/ListarUsuarios" element={<ListarUsuarios />} />
+          <Route path="/Admin/Usuarios/EditarUsuario/:id" element={<EditarUsuario />} />
+          <Route path="/Admin/Usuarios/HistorialCompra/:id" element={<HistorialCompra />} />
+
+          {/* Categorías (admin only) */}
+          <Route path="/Admin/Categorias" element={<MainCategorias />} />
+          <Route path="/Admin/Categorias/ListarCategorias" element={<ListarCategorias />} />
+          <Route path="/Admin/Categorias/NuevaCategoria" element={<NuevaCategoria />} />
+
+          {/* Reportes y otras secciones admin */}
+          <Route path="/Admin/Inventario/ProductoReporte" element={<ProductoReporte />} />
+          <Route path="/Admin/Inventario/ProductosCriticos" element={<ProductosCriticos />} />
+          <Route path="/Admin/Reporte" element={<Reporte />} />
+          <Route path="/Admin/Perfil" element={<Perfil />} />
+        </Route>
+      </Routes>
+
+      <div className="d-none">Prueba render</div>
     </>
   );
 }

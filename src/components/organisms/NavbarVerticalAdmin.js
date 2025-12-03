@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { useAuth } from '../../context/AuthContext'; // 1. Importar useAuth
+import { useAuth } from '../../context/AuthContext';
 
 const NavbarVerticalAdmin = () => {
-    const { user, logout } = useAuth(); // 2. Obtener usuario y función logout
+    const { user, logout } = useAuth();
+
+    // Normalizar rol y soportar variantes en español/inglés si existen
+    const role = (user?.rol || '').toString().toLowerCase();
+    const isAdmin = ['admin', 'administrador', 'jefe'].includes(role);
+    const isSeller = ['seller', 'vendedor', 'venda'].includes(role);
+
     return (
         <div>
             {/* --- SIDEBAR --- */}
@@ -21,9 +27,8 @@ const NavbarVerticalAdmin = () => {
                     <div className="border-top my-3 pt-3" id="admin-nav-top">
                         <ul className="nav flex-column mb-3">
                             
-                            {/* Item de Menú (Patrón) */}
+                            {/* Visible para TODOS los del panel */}
                             <li className="nav-item">
-                                {/* Se usa <Link> y la ruta 'to' debe coincidir con tu App.js */}
                                 <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin">
                                     <i className="bi bi-grid-fill"></i>
                                     Dashboard
@@ -44,33 +49,41 @@ const NavbarVerticalAdmin = () => {
                                 </Link>
                             </li>
 
-                            <li className="nav-item">
-                                <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Reporte">
-                                    <i className="bi bi-bar-chart-fill"></i>
-                                    Reportes
-                                </Link>
-                            </li>
+                            {/* Visible SOLO para Admin */}
+                            {isAdmin && (
+                                <>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-warning d-flex align-items-center gap-2" to="/Admin/Reporte">
+                                            <i className="bi bi-bar-chart-fill"></i>
+                                            Reportes
+                                        </Link>
+                                    </li>
 
-                            <li className="nav-item">
-                                <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Usuarios">
-                                    <i className="bi bi-people-fill"></i>
-                                    Usuarios
-                                </Link>
-                            </li>
-                            
-                            <li className="nav-item">
-                                <Link className="nav-link text-white d-flex align-items-center gap-2" to="#">
-                                    <i className="bi bi-person-standing"></i>
-                                    Clientes
-                                </Link>
-                            </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-warning d-flex align-items-center gap-2" to="/Admin/Usuarios">
+                                            <i className="bi bi-people-fill"></i>
+                                            Usuarios
+                                        </Link>
+                                    </li>
 
-                            <li className="nav-item">
-                                <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Categorias">
-                                    <i className="bi bi-tags-fill"></i>
-                                    Categorías
-                                </Link>
-                            </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-warning d-flex align-items-center gap-2" to="/Admin/Categorias">
+                                            <i className="bi bi-tags-fill"></i>
+                                            Categorías
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
+
+                            {/* Visible SOLO para Vendedor / Seller */}
+                            {isSeller && (
+                                <li className="nav-item">
+                                    <Link className="nav-link text-white d-flex align-items-center gap-2" to="/Admin/Clientes">
+                                        <i className="bi bi-person-standing"></i>
+                                        Clientes
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>
@@ -94,17 +107,15 @@ const NavbarVerticalAdmin = () => {
                         </ul>
                     </div>
 
-{/* Perfil de Usuario */}
+                    {/* Perfil de Usuario */}
                     <div className="d-flex flex-column p-3 border-top border-secondary" id="admin-user">
                         <div className="d-flex align-items-center">
                             <i className="bi bi-person-circle fs-3 me-2"></i>
                             <div className="d-flex flex-column">
-                                {/* 3. Mostrar nombre de usuario real */}
                                 <span className="fw-bold">{user ? user.nombre : 'Usuario'}</span>
                                 <small className="text-white-50">{user ? user.rol : 'Admin'}</small>
                             </div>
                         </div>
-                        {/* 4. Botón de Cerrar Sesión */}
                         <button 
                             className="btn btn-sm btn-outline-danger mt-3" 
                             onClick={logout}

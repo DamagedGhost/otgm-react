@@ -1,22 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react'; // 1. Importar useCallback
 import axios from 'axios';
 
-// ⚠️ CAMBIA ESTO POR LA IP DE TU INSTANCIA BACKEND SI ES NECESARIO
 const API_URL = 'http://34.193.81.109:3000/boletas';
 
 const useBoletaViewModel = () => {
   const [boletas, setBoletas] = useState([]);
-  const [loading, setLoading] = useState(false); // Estado de carga
-  const [error, setError] = useState(null);      // Estado de error
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Helper para headers (opcionalmente memoizado para evitar advertencias en cadena)
+  const getAuthHeaders = () => {
+      const token = localStorage.getItem('authToken');
+      return { headers: { 'Authorization': `Bearer ${token}` } };
+  };
 
   // --- CARGAR BOLETAS (READ) ---
-  const cargarBoletas = async () => {
+  // 2. Usamos useCallback para "memorizar" la función y que no cambie en cada render
+  const cargarBoletas = useCallback(async () => {
       setLoading(true);
       setError(null);
       try {
-          const res = await axios.get(API_URL);
+          const res = await axios.get(API_URL, getAuthHeaders());
           
-          // Adaptamos la respuesta
           const boletasAdaptadas = res.data.map(b => ({
               id: b._id,
               fecha: new Date(b.fecha).toLocaleDateString('es-CL', { 
@@ -27,7 +32,6 @@ const useBoletaViewModel = () => {
               estado: b.estado,
               userId: b.usuario?._id || 'N/A',
               cliente: b.usuario ? `${b.usuario.nombre} ${b.usuario.apellidos}` : 'Usuario Eliminado',
-              // IMPORTANTE: Mapeamos los items para poder ver el detalle
               items: b.items || [] 
           }));
           
@@ -38,15 +42,19 @@ const useBoletaViewModel = () => {
       } finally {
           setLoading(false);
       }
-  };
+  }, []); // Array vacío porque no depende de props o estados externos cambiantes
 
+  // 3. Ahora podemos agregar cargarBoletas al array de dependencias sin causar loops
   useEffect(() => {
-    cargarBoletas();
-  }, []);
+    if(localStorage.getItem('authToken')) {
+        cargarBoletas();
+    }
+  }, [cargarBoletas]); 
 
   // --- CREAR BOLETA (CREATE) ---
   const addBoleta = async (compraData) => {
       try {
+          // Nota: post no requiere headers si es pública, pero si la proteges usa getAuthHeaders()
           await axios.post(API_URL, compraData);
           await cargarBoletas(); 
           return true;
@@ -62,8 +70,8 @@ const useBoletaViewModel = () => {
 
   return { 
       boletas, 
-      loading, // Exportamos loading
-      error,   // Exportamos error
+      loading, 
+      error,   
       getBoletasByUserId,
       addBoleta 
   };

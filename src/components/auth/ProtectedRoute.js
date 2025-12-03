@@ -2,21 +2,22 @@ import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = () => {
+// Ahora recibimos "allowedRoles" como prop
+const ProtectedRoute = ({ allowedRoles }) => {
   const { user } = useAuth();
 
-  // 1. ¿Hay un usuario logueado?
+  // 1. No está logueado -> Login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // 2. ¿El usuario es 'admin'?
-  if (user.rol !== 'admin') {
-    // Si es un cliente, lo mandamos a la home
+  // 2. Si se exigen roles y el usuario no tiene uno de ellos -> Home (o página de error)
+  // Ejemplo: allowedRoles=['admin', 'vendedor'] y user.rol es 'cliente' -> Bloqueado
+  if (allowedRoles && !allowedRoles.includes(user.rol)) {
     return <Navigate to="/" replace />;
   }
 
-  // 3. Si es admin, dejamos que vea el contenido
+  // 3. Pase
   return <Outlet />;
 };
 
